@@ -1,0 +1,3400 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.54">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sangkon Han">
+
+<title>추천 시스템 스터디 실습 예제 2 – Study-SUSC</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Study-SUSC</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">추천 시스템 스터디 실습 예제 2</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../note/part_01a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">추천 시스템 스터디 Part1(a,b)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">예제</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../practice/practice01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">추천 시스템 스터디 실습 예제 1</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#분석" id="toc-분석" class="nav-link active" data-scroll-target="#분석">분석</a></li>
+  <li><a href="#예측" id="toc-예측" class="nav-link" data-scroll-target="#예측">예측</a></li>
+  <li><a href="#정확하지-않은데" id="toc-정확하지-않은데" class="nav-link" data-scroll-target="#정확하지-않은데">정확하지 않은데?</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">추천 시스템 스터디 실습 예제 2</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sangkon Han </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="cell-1" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> koreanize_matplotlib</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-2" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trans2022 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2022"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>population <span class="op">=</span> pd.read_excel(<span class="st">"data/raw-data.xlsx"</span>, <span class="st">"population"</span>, index_col<span class="op">=</span><span class="st">"local/year"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>birth <span class="op">=</span> pd.read_excel(<span class="st">"data/raw-data.xlsx"</span>, <span class="st">"birth"</span>, index_col<span class="op">=</span><span class="st">"local/year"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>death <span class="op">=</span> pd.read_excel(<span class="st">"data/raw-data.xlsx"</span>, <span class="st">"death"</span>, index_col<span class="op">=</span><span class="st">"local/year"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-3" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>trans2022.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Seoul</th>
+<th data-quarto-table-cell-role="th">Busan</th>
+<th data-quarto-table-cell-role="th">Daegu</th>
+<th data-quarto-table-cell-role="th">Incheon</th>
+<th data-quarto-table-cell-role="th">Gwangju</th>
+<th data-quarto-table-cell-role="th">Daejeon</th>
+<th data-quarto-table-cell-role="th">Ulsan</th>
+<th data-quarto-table-cell-role="th">Sejong</th>
+<th data-quarto-table-cell-role="th">Gyeonggi\n-do</th>
+<th data-quarto-table-cell-role="th">Gangwon\n-do</th>
+<th data-quarto-table-cell-role="th">Chungcheong\nbuk-do</th>
+<th data-quarto-table-cell-role="th">Chungcheong\nnam-do</th>
+<th data-quarto-table-cell-role="th">Jeollabuk\n-do</th>
+<th data-quarto-table-cell-role="th">Jeollanam\n-do</th>
+<th data-quarto-table-cell-role="th">Gyeongsang\nbuk-do</th>
+<th data-quarto-table-cell-role="th">Gyeongsang\nnam-do</th>
+<th data-quarto-table-cell-role="th">Jeju-do</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">in/out</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Seoul</td>
+<td>523992</td>
+<td>10011</td>
+<td>6782</td>
+<td>32297</td>
+<td>5448</td>
+<td>8967</td>
+<td>3171</td>
+<td>3707</td>
+<td>201762</td>
+<td>15338</td>
+<td>10069</td>
+<td>14799</td>
+<td>8855</td>
+<td>8418</td>
+<td>9687</td>
+<td>9117</td>
+<td>6942</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Busan</td>
+<td>17668</td>
+<td>188193</td>
+<td>4101</td>
+<td>2284</td>
+<td>895</td>
+<td>1802</td>
+<td>7250</td>
+<td>629</td>
+<td>13168</td>
+<td>1573</td>
+<td>1612</td>
+<td>2306</td>
+<td>1130</td>
+<td>2533</td>
+<td>7073</td>
+<td>34238</td>
+<td>1928</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Daegu</td>
+<td>12887</td>
+<td>4413</td>
+<td>118457</td>
+<td>1654</td>
+<td>469</td>
+<td>1883</td>
+<td>2296</td>
+<td>642</td>
+<td>10564</td>
+<td>1329</td>
+<td>1752</td>
+<td>1971</td>
+<td>723</td>
+<td>817</td>
+<td>32032</td>
+<td>5922</td>
+<td>1053</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Incheon</td>
+<td>27438</td>
+<td>1702</td>
+<td>1196</td>
+<td>151238</td>
+<td>1154</td>
+<td>1927</td>
+<td>651</td>
+<td>678</td>
+<td>43640</td>
+<td>3954</td>
+<td>3208</td>
+<td>6182</td>
+<td>2322</td>
+<td>2353</td>
+<td>2660</td>
+<td>2104</td>
+<td>1645</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gwangju</td>
+<td>8958</td>
+<td>910</td>
+<td>459</td>
+<td>1540</td>
+<td>84311</td>
+<td>1244</td>
+<td>292</td>
+<td>466</td>
+<td>7504</td>
+<td>631</td>
+<td>819</td>
+<td>1598</td>
+<td>4151</td>
+<td>23237</td>
+<td>670</td>
+<td>888</td>
+<td>778</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-4" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>population.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">2012</th>
+<th data-quarto-table-cell-role="th">2013</th>
+<th data-quarto-table-cell-role="th">2014</th>
+<th data-quarto-table-cell-role="th">2015</th>
+<th data-quarto-table-cell-role="th">2016</th>
+<th data-quarto-table-cell-role="th">2017</th>
+<th data-quarto-table-cell-role="th">2018</th>
+<th data-quarto-table-cell-role="th">2019</th>
+<th data-quarto-table-cell-role="th">2020</th>
+<th data-quarto-table-cell-role="th">2021</th>
+<th data-quarto-table-cell-role="th">2022</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">local/year</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Seoul</td>
+<td>10195318</td>
+<td>10143645</td>
+<td>10103233</td>
+<td>10022181</td>
+<td>9930616</td>
+<td>9857426</td>
+<td>9765623</td>
+<td>9729107</td>
+<td>9668465</td>
+<td>9509458</td>
+<td>9428372</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Busan</td>
+<td>3538484</td>
+<td>3527635</td>
+<td>3519401</td>
+<td>3513777</td>
+<td>3498529</td>
+<td>3470653</td>
+<td>3441453</td>
+<td>3413841</td>
+<td>3391946</td>
+<td>3350380</td>
+<td>3317812</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Daegu</td>
+<td>2505644</td>
+<td>2501588</td>
+<td>2493264</td>
+<td>2487829</td>
+<td>2484557</td>
+<td>2475231</td>
+<td>2461769</td>
+<td>2438031</td>
+<td>2418346</td>
+<td>2385412</td>
+<td>2363691</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Incheon</td>
+<td>2843981</td>
+<td>2879782</td>
+<td>2902608</td>
+<td>2925815</td>
+<td>2943069</td>
+<td>2948542</td>
+<td>2954642</td>
+<td>2957026</td>
+<td>2942828</td>
+<td>2948375</td>
+<td>2967314</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gwangju</td>
+<td>1469216</td>
+<td>1472910</td>
+<td>1475884</td>
+<td>1472199</td>
+<td>1469214</td>
+<td>1463770</td>
+<td>1459336</td>
+<td>1456468</td>
+<td>1450062</td>
+<td>1441611</td>
+<td>1431050</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-5" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>birth.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">2012</th>
+<th data-quarto-table-cell-role="th">2013</th>
+<th data-quarto-table-cell-role="th">2014</th>
+<th data-quarto-table-cell-role="th">2015</th>
+<th data-quarto-table-cell-role="th">2016</th>
+<th data-quarto-table-cell-role="th">2017</th>
+<th data-quarto-table-cell-role="th">2018</th>
+<th data-quarto-table-cell-role="th">2019</th>
+<th data-quarto-table-cell-role="th">2020</th>
+<th data-quarto-table-cell-role="th">2021</th>
+<th data-quarto-table-cell-role="th">2022</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">local/year</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Seoul</td>
+<td>93914</td>
+<td>84066</td>
+<td>83711</td>
+<td>83005</td>
+<td>75536</td>
+<td>65389</td>
+<td>58074</td>
+<td>53673</td>
+<td>47445</td>
+<td>45531</td>
+<td>42602</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Busan</td>
+<td>28673</td>
+<td>25831</td>
+<td>26190</td>
+<td>26645</td>
+<td>24906</td>
+<td>21480</td>
+<td>19152</td>
+<td>17049</td>
+<td>15058</td>
+<td>14446</td>
+<td>14134</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Daegu</td>
+<td>21472</td>
+<td>19340</td>
+<td>19361</td>
+<td>19438</td>
+<td>18298</td>
+<td>15946</td>
+<td>14400</td>
+<td>13233</td>
+<td>11193</td>
+<td>10661</td>
+<td>10134</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Incheon</td>
+<td>27781</td>
+<td>25560</td>
+<td>25786</td>
+<td>25491</td>
+<td>23609</td>
+<td>20445</td>
+<td>20087</td>
+<td>18522</td>
+<td>16040</td>
+<td>14947</td>
+<td>14464</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gwangju</td>
+<td>14392</td>
+<td>12729</td>
+<td>12729</td>
+<td>12441</td>
+<td>11580</td>
+<td>10120</td>
+<td>9105</td>
+<td>8364</td>
+<td>7318</td>
+<td>7956</td>
+<td>7446</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-6" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>death.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">2012</th>
+<th data-quarto-table-cell-role="th">2013</th>
+<th data-quarto-table-cell-role="th">2014</th>
+<th data-quarto-table-cell-role="th">2015</th>
+<th data-quarto-table-cell-role="th">2016</th>
+<th data-quarto-table-cell-role="th">2017</th>
+<th data-quarto-table-cell-role="th">2018</th>
+<th data-quarto-table-cell-role="th">2019</th>
+<th data-quarto-table-cell-role="th">2020</th>
+<th data-quarto-table-cell-role="th">2021</th>
+<th data-quarto-table-cell-role="th">2022</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">local/year</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Seoul</td>
+<td>41514</td>
+<td>42063</td>
+<td>42153</td>
+<td>43053</td>
+<td>43540</td>
+<td>42932</td>
+<td>45219</td>
+<td>43829</td>
+<td>45522</td>
+<td>48798</td>
+<td>55296</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Busan</td>
+<td>20534</td>
+<td>20096</td>
+<td>20230</td>
+<td>20820</td>
+<td>21074</td>
+<td>21434</td>
+<td>22570</td>
+<td>22260</td>
+<td>22950</td>
+<td>23531</td>
+<td>27713</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Daegu</td>
+<td>12352</td>
+<td>12531</td>
+<td>12642</td>
+<td>13081</td>
+<td>13502</td>
+<td>13629</td>
+<td>14070</td>
+<td>13752</td>
+<td>14460</td>
+<td>14560</td>
+<td>17592</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Incheon</td>
+<td>12881</td>
+<td>13039</td>
+<td>13409</td>
+<td>13452</td>
+<td>14119</td>
+<td>14290</td>
+<td>15316</td>
+<td>15131</td>
+<td>15689</td>
+<td>16493</td>
+<td>18957</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gwangju</td>
+<td>6874</td>
+<td>6891</td>
+<td>6935</td>
+<td>7443</td>
+<td>7247</td>
+<td>7560</td>
+<td>7781</td>
+<td>7635</td>
+<td>7785</td>
+<td>7981</td>
+<td>9350</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-7" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>population2012 <span class="op">=</span> population.iloc[:, <span class="dv">0</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>population2013 <span class="op">=</span> population.iloc[:, <span class="dv">1</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>population2014 <span class="op">=</span> population.iloc[:, <span class="dv">2</span>]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>population2015 <span class="op">=</span> population.iloc[:, <span class="dv">3</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>population2016 <span class="op">=</span> population.iloc[:, <span class="dv">4</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>population2017 <span class="op">=</span> population.iloc[:, <span class="dv">5</span>]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>population2018 <span class="op">=</span> population.iloc[:, <span class="dv">6</span>]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>population2019 <span class="op">=</span> population.iloc[:, <span class="dv">7</span>]</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>population2020 <span class="op">=</span> population.iloc[:, <span class="dv">8</span>]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>population2021 <span class="op">=</span> population.iloc[:, <span class="dv">9</span>]</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>population2022 <span class="op">=</span> population.iloc[:, <span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-8" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for i in range(11):</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#     globals()[f"population{2012+i}"] = population.iloc[:, i]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-9" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>birth2012 <span class="op">=</span> birth.iloc[:, <span class="dv">0</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>birth2013 <span class="op">=</span> birth.iloc[:, <span class="dv">1</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>birth2014 <span class="op">=</span> birth.iloc[:, <span class="dv">2</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>birth2015 <span class="op">=</span> birth.iloc[:, <span class="dv">3</span>]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>birth2016 <span class="op">=</span> birth.iloc[:, <span class="dv">4</span>]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>birth2017 <span class="op">=</span> birth.iloc[:, <span class="dv">5</span>]</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>birth2018 <span class="op">=</span> birth.iloc[:, <span class="dv">6</span>]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>birth2019 <span class="op">=</span> birth.iloc[:, <span class="dv">7</span>]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>birth2020 <span class="op">=</span> birth.iloc[:, <span class="dv">8</span>]</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>birth2021 <span class="op">=</span> birth.iloc[:, <span class="dv">9</span>]</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>birth2022 <span class="op">=</span> birth.iloc[:, <span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-10" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>death2012 <span class="op">=</span> death.iloc[:, <span class="dv">0</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>death2013 <span class="op">=</span> death.iloc[:, <span class="dv">1</span>]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>death2014 <span class="op">=</span> death.iloc[:, <span class="dv">2</span>]</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>death2015 <span class="op">=</span> death.iloc[:, <span class="dv">3</span>]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>death2016 <span class="op">=</span> death.iloc[:, <span class="dv">4</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>death2017 <span class="op">=</span> death.iloc[:, <span class="dv">5</span>]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>death2018 <span class="op">=</span> death.iloc[:, <span class="dv">6</span>]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>death2019 <span class="op">=</span> death.iloc[:, <span class="dv">7</span>]</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>death2020 <span class="op">=</span> death.iloc[:, <span class="dv">8</span>]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>death2021 <span class="op">=</span> death.iloc[:, <span class="dv">9</span>]</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>death2022 <span class="op">=</span> death.iloc[:, <span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-11" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>trans2012 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2012"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>trans2013 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2013"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>trans2014 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2014"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>trans2015 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2015"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>trans2016 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2016"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>trans2017 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2017"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>trans2018 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2018"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>trans2019 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2019"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>trans2020 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2020"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>trans2021 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2021"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>trans2022 <span class="op">=</span> pd.read_excel(</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/raw-data.xlsx"</span>, <span class="st">"2022"</span>, index_col<span class="op">=</span><span class="st">"in/out"</span>, na_values<span class="op">=</span>[<span class="st">"NA"</span>]</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="분석" class="level2">
+<h2 class="anchored" data-anchor-id="분석">분석</h2>
+<ul>
+<li>시도별 2012년 인구 이동, 시도별 인구, 시도별 출생, 시도별 사망에 대한 데이터를 로드한다. 일부 데이터를 시각화</li>
+<li>Pandas는 다양한 시각화 도구를 제공, 아주 세밀하거나 대화형 시각화는 일부 부족한 면이 있지만 데이터의 경향이나 분포를 파악하는데 부가 작업이 필요 없이 사용할 수 있다는 장점</li>
+</ul>
+<div id="cell-14" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>birth.plot(kind<span class="op">=</span><span class="st">"bar"</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>), title<span class="op">=</span><span class="st">"Birth"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice02_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-15" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>death.plot(kind<span class="op">=</span><span class="st">"bar"</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>), title<span class="op">=</span><span class="st">"Death"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice02_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>2012년 이후, 서울, 경기도, 경상남도 등에서 출생 명수가 줄어드는 것이 확연 =&gt; 시도별은?</li>
+</ul>
+<div id="cell-17" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>population.plot(kind<span class="op">=</span><span class="st">"bar"</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>), title<span class="op">=</span><span class="st">"Population"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice02_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>2014년 서울 인구는 감소하고 인천 경기도 그리고 세종은 인구가 증가</li>
+<li>이외 다른 시도는 큰 변경이 없음 =&gt; 서울에서 경기나 인천으로 이동했을 것으로 추정 =&gt; 증가분과 감소분이 차이가 있어 보임</li>
+<li>2014년에서 2013년 인구의 차이를 구해보자.</li>
+</ul>
+<div id="cell-19" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>population2014 <span class="op">-</span> population2013</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>local/year
+Seoul                -40412
+Busan                 -8234
+Daegu                 -8324
+Incheon               22826
+Gwangju                2974
+Daejeon               -1002
+Ulsan                  9897
+Sejong                33972
+Gyeonggi-do          123200
+Gangwon-do             2179
+Chungcheongbuk-do      6201
+Chungcheongnam-do     14642
+Jeollabuk-do          -1405
+Jeollanam-do          -1392
+Gyeongsangbuk-do       1354
+Gyeongsangnam-do      16437
+Jeju-do               13540
+dtype: int64</code></pre>
+</div>
+</div>
+<ul>
+<li>서울은 4만명이 줄어든 반면, 인천, 경기도는 각각 2만, 13만명이 늘었음</li>
+<li>좀 더 다각적인 데이터를 확인하기 위해서 출생자 수에서 사망자 수를 합하면, 순수 증감수를 알 수 있음</li>
+</ul>
+<div id="cell-21" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>birth <span class="op">-</span> death</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">2012</th>
+<th data-quarto-table-cell-role="th">2013</th>
+<th data-quarto-table-cell-role="th">2014</th>
+<th data-quarto-table-cell-role="th">2015</th>
+<th data-quarto-table-cell-role="th">2016</th>
+<th data-quarto-table-cell-role="th">2017</th>
+<th data-quarto-table-cell-role="th">2018</th>
+<th data-quarto-table-cell-role="th">2019</th>
+<th data-quarto-table-cell-role="th">2020</th>
+<th data-quarto-table-cell-role="th">2021</th>
+<th data-quarto-table-cell-role="th">2022</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">local/year</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Seoul</td>
+<td>52400</td>
+<td>42003</td>
+<td>41558</td>
+<td>39952</td>
+<td>31996</td>
+<td>22457</td>
+<td>12855</td>
+<td>9844</td>
+<td>1923</td>
+<td>-3267</td>
+<td>-12694</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Busan</td>
+<td>8139</td>
+<td>5735</td>
+<td>5960</td>
+<td>5825</td>
+<td>3832</td>
+<td>46</td>
+<td>-3418</td>
+<td>-5211</td>
+<td>-7892</td>
+<td>-9085</td>
+<td>-13579</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Daegu</td>
+<td>9120</td>
+<td>6809</td>
+<td>6719</td>
+<td>6357</td>
+<td>4796</td>
+<td>2317</td>
+<td>330</td>
+<td>-519</td>
+<td>-3267</td>
+<td>-3899</td>
+<td>-7458</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Incheon</td>
+<td>14900</td>
+<td>12521</td>
+<td>12377</td>
+<td>12039</td>
+<td>9490</td>
+<td>6155</td>
+<td>4771</td>
+<td>3391</td>
+<td>351</td>
+<td>-1546</td>
+<td>-4493</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gwangju</td>
+<td>7518</td>
+<td>5838</td>
+<td>5794</td>
+<td>4998</td>
+<td>4333</td>
+<td>2560</td>
+<td>1324</td>
+<td>729</td>
+<td>-467</td>
+<td>-25</td>
+<td>-1904</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Daejeon</td>
+<td>8699</td>
+<td>7465</td>
+<td>7398</td>
+<td>6813</td>
+<td>5478</td>
+<td>3822</td>
+<td>1934</td>
+<td>908</td>
+<td>-91</td>
+<td>-475</td>
+<td>-1625</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Ulsan</td>
+<td>7593</td>
+<td>6459</td>
+<td>6861</td>
+<td>6817</td>
+<td>5963</td>
+<td>4495</td>
+<td>2800</td>
+<td>2271</td>
+<td>1315</td>
+<td>634</td>
+<td>-970</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Sejong</td>
+<td>234</td>
+<td>299</td>
+<td>491</td>
+<td>1729</td>
+<td>2232</td>
+<td>2345</td>
+<td>2444</td>
+<td>2598</td>
+<td>2151</td>
+<td>2216</td>
+<td>1531</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gyeonggi-do</td>
+<td>73916</td>
+<td>61170</td>
+<td>60744</td>
+<td>60490</td>
+<td>50428</td>
+<td>37236</td>
+<td>28125</td>
+<td>22630</td>
+<td>14943</td>
+<td>8740</td>
+<td>-3687</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Gangwon-do</td>
+<td>1396</td>
+<td>224</td>
+<td>-342</td>
+<td>-372</td>
+<td>-1379</td>
+<td>-2587</td>
+<td>-3625</td>
+<td>-3623</td>
+<td>-4347</td>
+<td>-5392</td>
+<td>-7808</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Chungcheongbuk-do</td>
+<td>4661</td>
+<td>3287</td>
+<td>3192</td>
+<td>2925</td>
+<td>1955</td>
+<td>290</td>
+<td>-748</td>
+<td>-2030</td>
+<td>-2987</td>
+<td>-3751</td>
+<td>-6656</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Chungcheongnam-do</td>
+<td>6454</td>
+<td>4774</td>
+<td>4051</td>
+<td>4135</td>
+<td>2702</td>
+<td>349</td>
+<td>-1422</td>
+<td>-2368</td>
+<td>-4072</td>
+<td>-5342</td>
+<td>-9498</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Jeollabuk-do</td>
+<td>2538</td>
+<td>1063</td>
+<td>668</td>
+<td>366</td>
+<td>-1364</td>
+<td>-2947</td>
+<td>-4551</td>
+<td>-5554</td>
+<td>-6526</td>
+<td>-7574</td>
+<td>-10820</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Jeollanam-do</td>
+<td>224</td>
+<td>-931</td>
+<td>-1236</td>
+<td>-1482</td>
+<td>-2581</td>
+<td>-4494</td>
+<td>-5981</td>
+<td>-5955</td>
+<td>-7698</td>
+<td>-9138</td>
+<td>-12988</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gyeongsangbuk-do</td>
+<td>3991</td>
+<td>1961</td>
+<td>1758</td>
+<td>1448</td>
+<td>-362</td>
+<td>-3321</td>
+<td>-6210</td>
+<td>-7231</td>
+<td>-9926</td>
+<td>-10883</td>
+<td>-16529</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Gyeongsangnam-do</td>
+<td>12792</td>
+<td>9510</td>
+<td>9524</td>
+<td>8224</td>
+<td>5945</td>
+<td>2215</td>
+<td>-1495</td>
+<td>-2855</td>
+<td>-6058</td>
+<td>-7830</td>
+<td>-13368</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Jeju-do</td>
+<td>2754</td>
+<td>2011</td>
+<td>2226</td>
+<td>2261</td>
+<td>1952</td>
+<td>1299</td>
+<td>869</td>
+<td>541</td>
+<td>37</td>
+<td>-501</td>
+<td>-1207</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-22" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(birth <span class="op">-</span> death).plot(kind<span class="op">=</span><span class="st">"bar"</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>), title<span class="op">=</span><span class="st">"Population"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice02_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>2014년 서울에서 출생, 사망으로 증가한 인구수는 4만명 증가했지만, 결과적으로 2013년보다 줄어듬</li>
+<li>경기도는 출생, 사망으로 6만600명이 증가했기 때문에 외부에서 6만명이 추가적으로 유입</li>
+<li>추가적으로 강원도는 300명 출생수보다 사망자수가 더 많아 인구가 줄어들 수 있는 지역임을 알 수 있음</li>
+<li>전체 데이터를 시각적으로 확인하기 위해서 전체 인구로 각 시도 인구를 나누면 각 지역에 백분율 비율을 구할 수 있음</li>
+</ul>
+<div id="cell-24" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>population2012_pie <span class="op">=</span> population2012.astype(<span class="bu">float</span>) <span class="op">/</span> population2012.<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>population2012_pie.plot(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    kind<span class="op">=</span><span class="st">"pie"</span>, autopct<span class="op">=</span><span class="st">"</span><span class="sc">%.2f</span><span class="st">"</span>, figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>), title<span class="op">=</span><span class="st">"2012 Population"</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice02_files/figure-html/cell-19-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>서울, 경기도, 인천의 합이 약 50%</li>
+<li>같은 방법으로 2022년 시도별 인구 비율 구하면, 2012년과 2022년에서 가장 변화가 큰 시도를 구할 수 있음</li>
+</ul>
+<div id="cell-26" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>population2022_pie <span class="op">=</span> population2022.astype(<span class="bu">float</span>) <span class="op">/</span> population2022.<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>population2022_pie.plot(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    kind<span class="op">=</span><span class="st">"pie"</span>, autopct<span class="op">=</span><span class="st">"</span><span class="sc">%.2f</span><span class="st">"</span>, figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>), title<span class="op">=</span><span class="st">"2022 Population"</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice02_files/figure-html/cell-20-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>인구 비율로, 서울은 가장 감소가 큰 지역이며, 경기도는 가장 증가가 큰 지역이다. 서울을 중심으로 한 지역 편중은 사라지지 않고 있으며, 서울을 중심으로 경기도 지역으로 인구 이동이 있다는 점을 유추할 수 있음</li>
+</ul>
+<div id="cell-28" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>population2022_pie <span class="op">-</span> population2012_pie</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>local/year
+Seoul               -1.681901
+Busan               -0.495260
+Daegu               -0.322885
+Incheon              0.186508
+Gwangju             -0.101710
+Daejeon             -0.181179
+Ulsan               -0.092622
+Sejong               0.523696
+Gyeonggi-do          2.682093
+Gangwon-do          -0.032958
+Chungcheongbuk-do    0.027895
+Chungcheongnam-do    0.145255
+Jeollabuk-do        -0.236745
+Jeollanam-do        -0.214459
+Gyeongsangbuk-do    -0.240777
+Gyeongsangnam-do    -0.137628
+Jeju-do              0.172677
+dtype: float64</code></pre>
+</div>
+</div>
+</section>
+<section id="예측" class="level2">
+<h2 class="anchored" data-anchor-id="예측">예측</h2>
+<div id="cell-30" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">"display.precision"</span>, <span class="dv">2</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">"display.float_format"</span>, <span class="kw">lambda</span> x: <span class="ss">f"</span><span class="sc">{</span>x<span class="sc">:,.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>회귀분석은 주어진 속성(입력 변수)와 목적 변수가 긴밀하게 관계돼 있을 때, 사용할 수 있는 방법으로 관찰된 현상과 그 현상에 영향을 미치는 변수들간의 통계 모델을 만들고, 모델로 새로운 입력 변수에 따른 목적 변수를 예측하는 분석법</li>
+<li>회귀 분석으로 2023년, 2024년 인구를 예측
+<ul>
+<li>먼저, 회귀분석으로 예측하기 위해 statsmodels 라이브러리를 사용</li>
+<li>statsmodels 라이브러리는 일반최소제곱(Ordinary Least Squares) 기법을 제공</li>
+</ul></li>
+<li>간단한 f를 정의
+<ul>
+<li>t = 전체 : pop2022 - pop2021
+<ul>
+<li>i = 서울로 들어 오는 인구 : trans2022</li>
+<li>o = 서울로 나가는 인구 : trans2022</li>
+<li>b = 서울에서 태어난 인구 : brith2022</li>
+<li>d = 서울에서 사망한 인구 : death2022</li>
+</ul></li>
+</ul></li>
+</ul>
+<div id="cell-33" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>s2022 <span class="op">=</span> population2022[<span class="st">"Seoul"</span>]</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>s2021 <span class="op">=</span> population2021[<span class="st">"Seoul"</span>]</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s2022, s2021)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s2022 <span class="op">-</span> s2021)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>9428372 9509458
+-81086</code></pre>
+</div>
+</div>
+<div id="cell-34" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> trans2022.loc[<span class="st">"Seoul"</span>, :].<span class="bu">sum</span>()</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>o <span class="op">=</span> trans2022.loc[:, <span class="st">"Seoul"</span>].<span class="bu">sum</span>()</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>(i, o)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>i <span class="op">-</span> o</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>np.int64(-8822)</code></pre>
+</div>
+</div>
+<div id="cell-35" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> birth2022[<span class="st">"Seoul"</span>]</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> death2022[<span class="st">"Seoul"</span>]</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>(b, d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>(np.int64(42602), np.int64(55296))</code></pre>
+</div>
+</div>
+<div id="cell-36" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>(s2022 <span class="op">-</span> s2021 <span class="op">+</span> (i <span class="op">-</span> o <span class="op">+</span> b <span class="op">-</span> d))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>np.int64(-102602)</code></pre>
+</div>
+</div>
+<div id="cell-37" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>population.<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<pre><code>2012    50948272
+2013    51141463
+2014    51327916
+2015    51529338
+2016    51696216
+2017    51778544
+2018    51826059
+2019    51849861
+2020    51829023
+2021    51638809
+2022    51439038
+dtype: int64</code></pre>
+</div>
+</div>
+<div id="cell-38" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(df, year):</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> np.array(<span class="bu">range</span>(<span class="dv">2012</span>, <span class="dv">2023</span>))</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> sm.add_constant(X)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    n, m <span class="op">=</span> df.shape</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> []</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, n):</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> df.iloc[i, :].values</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>        est <span class="op">=</span> sm.OLS(y, X).fit()</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>        l.append(<span class="bu">float</span>(est.predict(np.array([<span class="dv">1</span>, year]))))</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.Series(l, index<span class="op">=</span>df.index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-39" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>population_predict <span class="op">=</span> population.copy()</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>population_predict[<span class="st">"2023"</span>] <span class="op">=</span> predict(population, <span class="dv">2023</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>population_predict[<span class="st">"2024"</span>] <span class="op">=</span> predict(population, <span class="dv">2024</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(population_predict.<span class="bu">sum</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2012   50,948,272.00
+2013   51,141,463.00
+2014   51,327,916.00
+2015   51,529,338.00
+2016   51,696,216.00
+2017   51,778,544.00
+2018   51,826,059.00
+2019   51,849,861.00
+2020   51,829,023.00
+2021   51,638,809.00
+2022   51,439,038.00
+2023   51,912,272.13
+2024   51,973,339.62
+dtype: float64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+  l.append(float(est.predict(np.array([1, year]))))
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+  l.append(float(est.predict(np.array([1, year]))))</code></pre>
+</div>
+</div>
+<div id="cell-40" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>population_predict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">2012</th>
+<th data-quarto-table-cell-role="th">2013</th>
+<th data-quarto-table-cell-role="th">2014</th>
+<th data-quarto-table-cell-role="th">2015</th>
+<th data-quarto-table-cell-role="th">2016</th>
+<th data-quarto-table-cell-role="th">2017</th>
+<th data-quarto-table-cell-role="th">2018</th>
+<th data-quarto-table-cell-role="th">2019</th>
+<th data-quarto-table-cell-role="th">2020</th>
+<th data-quarto-table-cell-role="th">2021</th>
+<th data-quarto-table-cell-role="th">2022</th>
+<th data-quarto-table-cell-role="th">2023</th>
+<th data-quarto-table-cell-role="th">2024</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">local/year</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Seoul</td>
+<td>10195318</td>
+<td>10143645</td>
+<td>10103233</td>
+<td>10022181</td>
+<td>9930616</td>
+<td>9857426</td>
+<td>9765623</td>
+<td>9729107</td>
+<td>9668465</td>
+<td>9509458</td>
+<td>9428372</td>
+<td>9,390,662.75</td>
+<td>9,314,054.35</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Busan</td>
+<td>3538484</td>
+<td>3527635</td>
+<td>3519401</td>
+<td>3513777</td>
+<td>3498529</td>
+<td>3470653</td>
+<td>3441453</td>
+<td>3413841</td>
+<td>3391946</td>
+<td>3350380</td>
+<td>3317812</td>
+<td>3,319,354.11</td>
+<td>3,297,065.99</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Daegu</td>
+<td>2505644</td>
+<td>2501588</td>
+<td>2493264</td>
+<td>2487829</td>
+<td>2484557</td>
+<td>2475231</td>
+<td>2461769</td>
+<td>2438031</td>
+<td>2418346</td>
+<td>2385412</td>
+<td>2363691</td>
+<td>2,372,945.25</td>
+<td>2,359,112.46</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Incheon</td>
+<td>2843981</td>
+<td>2879782</td>
+<td>2902608</td>
+<td>2925815</td>
+<td>2943069</td>
+<td>2948542</td>
+<td>2954642</td>
+<td>2957026</td>
+<td>2942828</td>
+<td>2948375</td>
+<td>2967314</td>
+<td>2,987,763.38</td>
+<td>2,997,633.31</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gwangju</td>
+<td>1469216</td>
+<td>1472910</td>
+<td>1475884</td>
+<td>1472199</td>
+<td>1469214</td>
+<td>1463770</td>
+<td>1459336</td>
+<td>1456468</td>
+<td>1450062</td>
+<td>1441611</td>
+<td>1431050</td>
+<td>1,436,438.25</td>
+<td>1,432,485.24</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Daejeon</td>
+<td>1524583</td>
+<td>1532811</td>
+<td>1531809</td>
+<td>1518775</td>
+<td>1514370</td>
+<td>1502227</td>
+<td>1489936</td>
+<td>1474870</td>
+<td>1463882</td>
+<td>1452251</td>
+<td>1446072</td>
+<td>1,439,372.18</td>
+<td>1,430,001.09</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Ulsan</td>
+<td>1147256</td>
+<td>1156480</td>
+<td>1166377</td>
+<td>1173534</td>
+<td>1172304</td>
+<td>1165132</td>
+<td>1155623</td>
+<td>1148019</td>
+<td>1136017</td>
+<td>1121592</td>
+<td>1110663</td>
+<td>1,124,019.29</td>
+<td>1,119,643.76</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Sejong</td>
+<td>113117</td>
+<td>122153</td>
+<td>156125</td>
+<td>210884</td>
+<td>243048</td>
+<td>280100</td>
+<td>314126</td>
+<td>340575</td>
+<td>355831</td>
+<td>371895</td>
+<td>383591</td>
+<td>441,817.69</td>
+<td>471,644.20</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gyeonggi-do</td>
+<td>12093299</td>
+<td>12234630</td>
+<td>12357830</td>
+<td>12522606</td>
+<td>12716780</td>
+<td>12873895</td>
+<td>13077153</td>
+<td>13239666</td>
+<td>13427014</td>
+<td>13565450</td>
+<td>13589432</td>
+<td>13,852,849.91</td>
+<td>14,014,722.55</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Gangwon-do</td>
+<td>1538630</td>
+<td>1542263</td>
+<td>1544442</td>
+<td>1549507</td>
+<td>1550806</td>
+<td>1550142</td>
+<td>1543052</td>
+<td>1541502</td>
+<td>1542840</td>
+<td>1538492</td>
+<td>1536498</td>
+<td>1,540,507.78</td>
+<td>1,540,014.02</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Chungcheongbuk-do</td>
+<td>1565628</td>
+<td>1572732</td>
+<td>1578933</td>
+<td>1583952</td>
+<td>1591625</td>
+<td>1594432</td>
+<td>1599252</td>
+<td>1600007</td>
+<td>1600837</td>
+<td>1597427</td>
+<td>1595058</td>
+<td>1,608,246.40</td>
+<td>1,611,440.75</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Chungcheongnam-do</td>
+<td>2028777</td>
+<td>2047631</td>
+<td>2062273</td>
+<td>2077649</td>
+<td>2096727</td>
+<td>2116770</td>
+<td>2126282</td>
+<td>2123709</td>
+<td>2121029</td>
+<td>2119257</td>
+<td>2123037</td>
+<td>2,152,417.20</td>
+<td>2,162,014.90</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Jeollabuk-do</td>
+<td>1873341</td>
+<td>1872965</td>
+<td>1871560</td>
+<td>1869711</td>
+<td>1864791</td>
+<td>1854607</td>
+<td>1836832</td>
+<td>1818917</td>
+<td>1804104</td>
+<td>1786855</td>
+<td>1769607</td>
+<td>1,773,297.73</td>
+<td>1,762,433.86</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Jeollanam-do</td>
+<td>1909618</td>
+<td>1907172</td>
+<td>1905780</td>
+<td>1908996</td>
+<td>1903914</td>
+<td>1896424</td>
+<td>1882970</td>
+<td>1868745</td>
+<td>1851549</td>
+<td>1832803</td>
+<td>1817697</td>
+<td>1,824,812.36</td>
+<td>1,815,528.55</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gyeongsangbuk-do</td>
+<td>2698353</td>
+<td>2699440</td>
+<td>2700794</td>
+<td>2702826</td>
+<td>2700398</td>
+<td>2691706</td>
+<td>2676831</td>
+<td>2665836</td>
+<td>2639422</td>
+<td>2626609</td>
+<td>2600492</td>
+<td>2,615,030.16</td>
+<td>2,605,372.96</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Gyeongsangnam-do</td>
+<td>3319314</td>
+<td>3333820</td>
+<td>3350257</td>
+<td>3364702</td>
+<td>3373871</td>
+<td>3380404</td>
+<td>3373988</td>
+<td>3362553</td>
+<td>3340216</td>
+<td>3314183</td>
+<td>3280493</td>
+<td>3,328,147.89</td>
+<td>3,325,357.37</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Jeju-do</td>
+<td>583713</td>
+<td>593806</td>
+<td>607346</td>
+<td>624395</td>
+<td>641597</td>
+<td>657083</td>
+<td>667191</td>
+<td>670989</td>
+<td>674635</td>
+<td>676759</td>
+<td>678159</td>
+<td>704,589.78</td>
+<td>714,814.25</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-41" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>population_predict.plot(kind<span class="op">=</span><span class="st">"bar"</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>), title<span class="op">=</span><span class="st">"Population 2023, 2024"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice02_files/figure-html/cell-31-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-42" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>birth_predict <span class="op">=</span> birth.copy()</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>birth_predict[<span class="st">"2023"</span>] <span class="op">=</span> predict(birth, <span class="dv">2023</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>birth_predict[<span class="st">"2024"</span>] <span class="op">=</span> predict(birth, <span class="dv">2024</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>birth_predict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+  l.append(float(est.predict(np.array([1, year]))))
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+  l.append(float(est.predict(np.array([1, year]))))</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">2012</th>
+<th data-quarto-table-cell-role="th">2013</th>
+<th data-quarto-table-cell-role="th">2014</th>
+<th data-quarto-table-cell-role="th">2015</th>
+<th data-quarto-table-cell-role="th">2016</th>
+<th data-quarto-table-cell-role="th">2017</th>
+<th data-quarto-table-cell-role="th">2018</th>
+<th data-quarto-table-cell-role="th">2019</th>
+<th data-quarto-table-cell-role="th">2020</th>
+<th data-quarto-table-cell-role="th">2021</th>
+<th data-quarto-table-cell-role="th">2022</th>
+<th data-quarto-table-cell-role="th">2023</th>
+<th data-quarto-table-cell-role="th">2024</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">local/year</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Seoul</td>
+<td>93914</td>
+<td>84066</td>
+<td>83711</td>
+<td>83005</td>
+<td>75536</td>
+<td>65389</td>
+<td>58074</td>
+<td>53673</td>
+<td>47445</td>
+<td>45531</td>
+<td>42602</td>
+<td>34,142.87</td>
+<td>28,728.11</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Busan</td>
+<td>28673</td>
+<td>25831</td>
+<td>26190</td>
+<td>26645</td>
+<td>24906</td>
+<td>21480</td>
+<td>19152</td>
+<td>17049</td>
+<td>15058</td>
+<td>14446</td>
+<td>14134</td>
+<td>11,601.62</td>
+<td>9,996.37</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Daegu</td>
+<td>21472</td>
+<td>19340</td>
+<td>19361</td>
+<td>19438</td>
+<td>18298</td>
+<td>15946</td>
+<td>14400</td>
+<td>13233</td>
+<td>11193</td>
+<td>10661</td>
+<td>10134</td>
+<td>8,558.65</td>
+<td>7,356.67</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Incheon</td>
+<td>27781</td>
+<td>25560</td>
+<td>25786</td>
+<td>25491</td>
+<td>23609</td>
+<td>20445</td>
+<td>20087</td>
+<td>18522</td>
+<td>16040</td>
+<td>14947</td>
+<td>14464</td>
+<td>12,662.82</td>
+<td>11,247.05</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gwangju</td>
+<td>14392</td>
+<td>12729</td>
+<td>12729</td>
+<td>12441</td>
+<td>11580</td>
+<td>10120</td>
+<td>9105</td>
+<td>8364</td>
+<td>7318</td>
+<td>7956</td>
+<td>7446</td>
+<td>5,979.05</td>
+<td>5,245.56</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Daejeon</td>
+<td>15279</td>
+<td>14099</td>
+<td>13962</td>
+<td>13774</td>
+<td>12436</td>
+<td>10851</td>
+<td>9337</td>
+<td>8410</td>
+<td>7481</td>
+<td>7414</td>
+<td>7677</td>
+<td>5,628.00</td>
+<td>4,736.91</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Ulsan</td>
+<td>12160</td>
+<td>11330</td>
+<td>11556</td>
+<td>11732</td>
+<td>10910</td>
+<td>9381</td>
+<td>8149</td>
+<td>7539</td>
+<td>6617</td>
+<td>6127</td>
+<td>5399</td>
+<td>4,777.40</td>
+<td>4,044.85</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Sejong</td>
+<td>1054</td>
+<td>1111</td>
+<td>1344</td>
+<td>2708</td>
+<td>3297</td>
+<td>3504</td>
+<td>3703</td>
+<td>3819</td>
+<td>3468</td>
+<td>3570</td>
+<td>3209</td>
+<td>4,413.96</td>
+<td>4,683.15</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gyeonggi-do</td>
+<td>124746</td>
+<td>112129</td>
+<td>112169</td>
+<td>113495</td>
+<td>105643</td>
+<td>94088</td>
+<td>88175</td>
+<td>83198</td>
+<td>77737</td>
+<td>76139</td>
+<td>75323</td>
+<td>65,398.38</td>
+<td>60,194.45</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Gangwon-do</td>
+<td>12426</td>
+<td>10980</td>
+<td>10662</td>
+<td>10929</td>
+<td>10058</td>
+<td>8958</td>
+<td>8351</td>
+<td>8283</td>
+<td>7835</td>
+<td>7357</td>
+<td>7278</td>
+<td>6,335.44</td>
+<td>5,828.96</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Chungcheongbuk-do</td>
+<td>15139</td>
+<td>13658</td>
+<td>13366</td>
+<td>13563</td>
+<td>12742</td>
+<td>11394</td>
+<td>10586</td>
+<td>9333</td>
+<td>8607</td>
+<td>8190</td>
+<td>7452</td>
+<td>6,628.18</td>
+<td>5,853.64</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Chungcheongnam-do</td>
+<td>20448</td>
+<td>18628</td>
+<td>18200</td>
+<td>18604</td>
+<td>17302</td>
+<td>15670</td>
+<td>14380</td>
+<td>13228</td>
+<td>11950</td>
+<td>10984</td>
+<td>10221</td>
+<td>9,194.00</td>
+<td>8,156.41</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Jeollabuk-do</td>
+<td>16238</td>
+<td>14555</td>
+<td>14231</td>
+<td>14087</td>
+<td>12698</td>
+<td>11348</td>
+<td>10001</td>
+<td>8971</td>
+<td>8165</td>
+<td>7475</td>
+<td>7032</td>
+<td>5,592.25</td>
+<td>4,633.37</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Jeollanam-do</td>
+<td>16990</td>
+<td>15401</td>
+<td>14817</td>
+<td>15061</td>
+<td>13980</td>
+<td>12354</td>
+<td>11238</td>
+<td>10832</td>
+<td>9738</td>
+<td>8430</td>
+<td>7888</td>
+<td>6,984.58</td>
+<td>6,077.03</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gyeongsangbuk-do</td>
+<td>24635</td>
+<td>22206</td>
+<td>22062</td>
+<td>22310</td>
+<td>20616</td>
+<td>17957</td>
+<td>16079</td>
+<td>14472</td>
+<td>12873</td>
+<td>12045</td>
+<td>11311</td>
+<td>9,412.69</td>
+<td>8,003.20</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Gyeongsangnam-do</td>
+<td>33211</td>
+<td>29504</td>
+<td>29763</td>
+<td>29537</td>
+<td>27138</td>
+<td>23849</td>
+<td>21224</td>
+<td>19250</td>
+<td>16823</td>
+<td>15562</td>
+<td>14017</td>
+<td>11,786.40</td>
+<td>9,813.25</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Jeju-do</td>
+<td>5992</td>
+<td>5328</td>
+<td>5526</td>
+<td>5600</td>
+<td>5494</td>
+<td>5037</td>
+<td>4781</td>
+<td>4500</td>
+<td>3989</td>
+<td>3728</td>
+<td>3599</td>
+<td>3,458.24</td>
+<td>3,222.88</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-43" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(birth_predict.<span class="bu">sum</span>())</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>birth_predict.plot(kind<span class="op">=</span><span class="st">"bar"</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>), title<span class="op">=</span><span class="st">"birth 2023, 2024"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2012   484,550.00
+2013   436,455.00
+2014   435,435.00
+2015   438,420.00
+2016   406,243.00
+2017   357,771.00
+2018   326,822.00
+2019   302,676.00
+2020   272,337.00
+2021   260,562.00
+2022   249,186.00
+2023   212,554.55
+2024   187,821.86
+dtype: float64</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice02_files/figure-html/cell-33-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>2022년 총 출생자 수는 249,186명으로, 2012년 20만 명이상 감소</p></li>
+<li><p>2024년은 2022년 기준으로 약 6만명 감소</p></li>
+<li><p>시도별 인구 이동을 기반으로 시도별 인구 분포를 예측</p>
+<ul>
+<li>마코프 체인을 활용</li>
+<li>마코프 체인은 단위 시간에 따른 상태 변화를 나타내는데, 매 단위 시간마다 상태가 변이되거나 유지되며, 상태 변이를 전이라 함</li>
+<li>전이는 상태전이확률(state transition probability) 행렬로 나타내며, 이를 바탕으로 변화를 예측</li>
+<li>현재 상태에서 다음 상태로 전이될 때 이 상태전이확률로 확률적으로 전이</li>
+<li>2014년 각 시도의 이동 인구는 상태전이확률로 나타낼 수 있다. 즉, 2014년 서울에서 이동하여 다른 시도로 이동할 확률은 서울에서 떠난 전인구로 각 시도로 이동한 인구를 나누면, 상태전이확률을 구할 수 있음</li>
+<li>각 시도도 마찬가지로 시도에서 전출한 총인구를 각 다른 시도로 전입한 인구를 나누면 됨</li>
+</ul></li>
+</ul>
+<div id="cell-46" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>trans2022_percent <span class="op">=</span> trans2022.copy()</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">17</span>):</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    trans2022_percent.iloc[:, i] <span class="op">=</span> (</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>        trans2022.iloc[:, i].astype(<span class="bu">float</span>) <span class="op">/</span> trans2022.iloc[:, i].<span class="bu">sum</span>()</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>trans2022_percent</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.59
+Busan               0.02
+Daegu               0.01
+Incheon             0.03
+Gwangju             0.01
+Daejeon             0.01
+Ulsan               0.01
+Sejong              0.00
+Gyeonggi-do         0.20
+Gangwon-do          0.02
+Chungcheongbuk-do   0.01
+Chungcheongnam-do   0.02
+Jeollabuk-do        0.01
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.02
+Gyeongsangnam-do    0.02
+Jeju-do             0.01
+Name: Seoul, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.04
+Busan               0.68
+Daegu               0.02
+Incheon             0.01
+Gwangju             0.00
+Daejeon             0.01
+Ulsan               0.03
+Sejong              0.00
+Gyeonggi-do         0.03
+Gangwon-do          0.00
+Chungcheongbuk-do   0.00
+Chungcheongnam-do   0.01
+Jeollabuk-do        0.00
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.03
+Gyeongsangnam-do    0.13
+Jeju-do             0.01
+Name: Busan, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.04
+Busan               0.02
+Daegu               0.64
+Incheon             0.01
+Gwangju             0.00
+Daejeon             0.01
+Ulsan               0.01
+Sejong              0.00
+Gyeonggi-do         0.04
+Gangwon-do          0.01
+Chungcheongbuk-do   0.01
+Chungcheongnam-do   0.01
+Jeollabuk-do        0.00
+Jeollanam-do        0.00
+Gyeongsangbuk-do    0.16
+Gyeongsangnam-do    0.04
+Jeju-do             0.00
+Name: Daegu, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.12
+Busan               0.01
+Daegu               0.01
+Incheon             0.57
+Gwangju             0.01
+Daejeon             0.01
+Ulsan               0.00
+Sejong              0.00
+Gyeonggi-do         0.19
+Gangwon-do          0.01
+Chungcheongbuk-do   0.01
+Chungcheongnam-do   0.02
+Jeollabuk-do        0.01
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.01
+Gyeongsangnam-do    0.01
+Jeju-do             0.01
+Name: Incheon, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.04
+Busan               0.01
+Daegu               0.00
+Incheon             0.01
+Gwangju             0.64
+Daejeon             0.01
+Ulsan               0.00
+Sejong              0.00
+Gyeonggi-do         0.04
+Gangwon-do          0.00
+Chungcheongbuk-do   0.00
+Chungcheongnam-do   0.01
+Jeollabuk-do        0.03
+Jeollanam-do        0.18
+Gyeongsangbuk-do    0.00
+Gyeongsangnam-do    0.01
+Jeju-do             0.01
+Name: Gwangju, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.06
+Busan               0.01
+Daegu               0.01
+Incheon             0.01
+Gwangju             0.01
+Daejeon             0.57
+Ulsan               0.00
+Sejong              0.03
+Gyeonggi-do         0.07
+Gangwon-do          0.01
+Chungcheongbuk-do   0.05
+Chungcheongnam-do   0.08
+Jeollabuk-do        0.03
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.02
+Gyeongsangnam-do    0.02
+Jeju-do             0.00
+Name: Daejeon, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.04
+Busan               0.09
+Daegu               0.03
+Incheon             0.01
+Gwangju             0.00
+Daejeon             0.01
+Ulsan               0.60
+Sejong              0.00
+Gyeonggi-do         0.04
+Gangwon-do          0.01
+Chungcheongbuk-do   0.01
+Chungcheongnam-do   0.01
+Jeollabuk-do        0.01
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.07
+Gyeongsangnam-do    0.07
+Jeju-do             0.01
+Name: Ulsan, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.09
+Busan               0.02
+Daegu               0.02
+Incheon             0.02
+Gwangju             0.01
+Daejeon             0.16
+Ulsan               0.01
+Sejong              0.33
+Gyeonggi-do         0.10
+Gangwon-do          0.01
+Chungcheongbuk-do   0.08
+Chungcheongnam-do   0.09
+Jeollabuk-do        0.02
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.02
+Gyeongsangnam-do    0.02
+Jeju-do             0.01
+Name: Sejong, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.18
+Busan               0.01
+Daegu               0.01
+Incheon             0.04
+Gwangju             0.01
+Daejeon             0.01
+Ulsan               0.00
+Sejong              0.00
+Gyeonggi-do         0.63
+Gangwon-do          0.02
+Chungcheongbuk-do   0.01
+Chungcheongnam-do   0.02
+Jeollabuk-do        0.01
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.01
+Gyeongsangnam-do    0.01
+Jeju-do             0.01
+Name: Gyeonggi\n-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.11
+Busan               0.01
+Daegu               0.01
+Incheon             0.03
+Gwangju             0.00
+Daejeon             0.01
+Ulsan               0.00
+Sejong              0.00
+Gyeonggi-do         0.16
+Gangwon-do          0.57
+Chungcheongbuk-do   0.02
+Chungcheongnam-do   0.02
+Jeollabuk-do        0.01
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.02
+Gyeongsangnam-do    0.01
+Jeju-do             0.00
+Name: Gangwon\n-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.07
+Busan               0.01
+Daegu               0.01
+Incheon             0.02
+Gwangju             0.01
+Daejeon             0.05
+Ulsan               0.01
+Sejong              0.02
+Gyeonggi-do         0.13
+Gangwon-do          0.02
+Chungcheongbuk-do   0.55
+Chungcheongnam-do   0.04
+Jeollabuk-do        0.01
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.03
+Gyeongsangnam-do    0.02
+Jeju-do             0.00
+Name: Chungcheong\nbuk-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.08
+Busan               0.01
+Daegu               0.01
+Incheon             0.03
+Gwangju             0.01
+Daejeon             0.06
+Ulsan               0.01
+Sejong              0.02
+Gyeonggi-do         0.16
+Gangwon-do          0.01
+Chungcheongbuk-do   0.03
+Chungcheongnam-do   0.50
+Jeollabuk-do        0.02
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.02
+Gyeongsangnam-do    0.02
+Jeju-do             0.00
+Name: Chungcheong\nnam-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.06
+Busan               0.01
+Daegu               0.00
+Incheon             0.02
+Gwangju             0.03
+Daejeon             0.02
+Ulsan               0.00
+Sejong              0.01
+Gyeonggi-do         0.08
+Gangwon-do          0.01
+Chungcheongbuk-do   0.01
+Chungcheongnam-do   0.03
+Jeollabuk-do        0.68
+Jeollanam-do        0.03
+Gyeongsangbuk-do    0.01
+Gyeongsangnam-do    0.01
+Jeju-do             0.00
+Name: Jeollabuk\n-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.06
+Busan               0.02
+Daegu               0.01
+Incheon             0.02
+Gwangju             0.16
+Daejeon             0.01
+Ulsan               0.00
+Sejong              0.00
+Gyeonggi-do         0.07
+Gangwon-do          0.01
+Chungcheongbuk-do   0.01
+Chungcheongnam-do   0.01
+Jeollabuk-do        0.03
+Jeollanam-do        0.56
+Gyeongsangbuk-do    0.01
+Gyeongsangnam-do    0.02
+Jeju-do             0.01
+Name: Jeollanam\n-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.05
+Busan               0.03
+Daegu               0.16
+Incheon             0.01
+Gwangju             0.00
+Daejeon             0.01
+Ulsan               0.03
+Sejong              0.00
+Gyeonggi-do         0.07
+Gangwon-do          0.01
+Chungcheongbuk-do   0.01
+Chungcheongnam-do   0.01
+Jeollabuk-do        0.01
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.54
+Gyeongsangnam-do    0.04
+Jeju-do             0.00
+Name: Gyeongsang\nbuk-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.04
+Busan               0.14
+Daegu               0.02
+Incheon             0.01
+Gwangju             0.00
+Daejeon             0.01
+Ulsan               0.02
+Sejong              0.00
+Gyeonggi-do         0.04
+Gangwon-do          0.01
+Chungcheongbuk-do   0.01
+Chungcheongnam-do   0.01
+Jeollabuk-do        0.01
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.03
+Gyeongsangnam-do    0.63
+Jeju-do             0.01
+Name: Gyeongsang\nnam-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (
+C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+Seoul               0.11
+Busan               0.03
+Daegu               0.02
+Incheon             0.03
+Gwangju             0.01
+Daejeon             0.01
+Ulsan               0.01
+Sejong              0.00
+Gyeonggi-do         0.12
+Gangwon-do          0.01
+Chungcheongbuk-do   0.01
+Chungcheongnam-do   0.01
+Jeollabuk-do        0.01
+Jeollanam-do        0.01
+Gyeongsangbuk-do    0.02
+Gyeongsangnam-do    0.02
+Jeju-do             0.57
+Name: Jeju-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  trans2022_percent.iloc[:, i] = (</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="37">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Seoul</th>
+<th data-quarto-table-cell-role="th">Busan</th>
+<th data-quarto-table-cell-role="th">Daegu</th>
+<th data-quarto-table-cell-role="th">Incheon</th>
+<th data-quarto-table-cell-role="th">Gwangju</th>
+<th data-quarto-table-cell-role="th">Daejeon</th>
+<th data-quarto-table-cell-role="th">Ulsan</th>
+<th data-quarto-table-cell-role="th">Sejong</th>
+<th data-quarto-table-cell-role="th">Gyeonggi\n-do</th>
+<th data-quarto-table-cell-role="th">Gangwon\n-do</th>
+<th data-quarto-table-cell-role="th">Chungcheong\nbuk-do</th>
+<th data-quarto-table-cell-role="th">Chungcheong\nnam-do</th>
+<th data-quarto-table-cell-role="th">Jeollabuk\n-do</th>
+<th data-quarto-table-cell-role="th">Jeollanam\n-do</th>
+<th data-quarto-table-cell-role="th">Gyeongsang\nbuk-do</th>
+<th data-quarto-table-cell-role="th">Gyeongsang\nnam-do</th>
+<th data-quarto-table-cell-role="th">Jeju-do</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">in/out</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Seoul</td>
+<td>0.59</td>
+<td>0.04</td>
+<td>0.04</td>
+<td>0.12</td>
+<td>0.04</td>
+<td>0.06</td>
+<td>0.04</td>
+<td>0.09</td>
+<td>0.18</td>
+<td>0.11</td>
+<td>0.07</td>
+<td>0.08</td>
+<td>0.06</td>
+<td>0.06</td>
+<td>0.05</td>
+<td>0.04</td>
+<td>0.11</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Busan</td>
+<td>0.02</td>
+<td>0.68</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.09</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.03</td>
+<td>0.14</td>
+<td>0.03</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Daegu</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.64</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.03</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.16</td>
+<td>0.02</td>
+<td>0.02</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Incheon</td>
+<td>0.03</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.57</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.04</td>
+<td>0.03</td>
+<td>0.02</td>
+<td>0.03</td>
+<td>0.02</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.03</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gwangju</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.64</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.03</td>
+<td>0.16</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Daejeon</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.57</td>
+<td>0.01</td>
+<td>0.16</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.05</td>
+<td>0.06</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Ulsan</td>
+<td>0.01</td>
+<td>0.03</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.60</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.03</td>
+<td>0.02</td>
+<td>0.01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Sejong</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.03</td>
+<td>0.00</td>
+<td>0.33</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.02</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gyeonggi-do</td>
+<td>0.20</td>
+<td>0.03</td>
+<td>0.04</td>
+<td>0.19</td>
+<td>0.04</td>
+<td>0.07</td>
+<td>0.04</td>
+<td>0.10</td>
+<td>0.63</td>
+<td>0.16</td>
+<td>0.13</td>
+<td>0.16</td>
+<td>0.08</td>
+<td>0.07</td>
+<td>0.07</td>
+<td>0.04</td>
+<td>0.12</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Gangwon-do</td>
+<td>0.02</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.57</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Chungcheongbuk-do</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.05</td>
+<td>0.01</td>
+<td>0.08</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.55</td>
+<td>0.03</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Chungcheongnam-do</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.08</td>
+<td>0.01</td>
+<td>0.09</td>
+<td>0.02</td>
+<td>0.02</td>
+<td>0.04</td>
+<td>0.50</td>
+<td>0.03</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Jeollabuk-do</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.03</td>
+<td>0.03</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.68</td>
+<td>0.03</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Jeollanam-do</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.18</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.03</td>
+<td>0.56</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Gyeongsangbuk-do</td>
+<td>0.02</td>
+<td>0.03</td>
+<td>0.16</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.02</td>
+<td>0.07</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.03</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.54</td>
+<td>0.03</td>
+<td>0.02</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Gyeongsangnam-do</td>
+<td>0.02</td>
+<td>0.13</td>
+<td>0.04</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.07</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.04</td>
+<td>0.63</td>
+<td>0.02</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Jeju-do</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>0.57</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ul>
+<li>서울에서 서울로 전이 확률은 <span class="math inline">\(0.599\)</span>, 서울에서 부산으로 전이 확률은 <span class="math inline">\(0.02\)</span>, 서울에서 대구로 전이 확률은 <span class="math inline">\(0.01\)</span></li>
+<li>이 상태전이확률을 이용하여 다음 상태를 구할 수 있음 =&gt; <span class="math inline">\(X_{1} = T * X_{0}\)</span>로, 내년 인구 <span class="math inline">\(X_{1}\)</span>는 상태전이확률 <span class="math inline">\(T\)</span>와 현재 인구 <span class="math inline">\(X_{0}\)</span>의 내적으로 구할 수 있음</li>
+</ul>
+<div id="cell-48" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>pd.Series(np.dot(trans2022_percent, population2022), index<span class="op">=</span>trans2022.index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<pre><code>in/out
+Seoul                9,770,837.12
+Busan                3,505,609.21
+Daegu                2,480,057.09
+Incheon              2,867,366.92
+Gwangju              1,561,376.03
+Daejeon              1,549,372.04
+Ulsan                1,137,238.28
+Sejong                 382,488.00
+Gyeonggi-do         12,914,091.78
+Gangwon-do           1,521,104.04
+Chungcheongbuk-do    1,544,788.58
+Chungcheongnam-do    2,031,319.22
+Jeollabuk-do         1,804,324.46
+Jeollanam-do         1,761,857.89
+Gyeongsangbuk-do     2,605,664.62
+Gyeongsangnam-do     3,320,980.32
+Jeju-do                680,562.40
+dtype: float64</code></pre>
+</div>
+</div>
+<div id="cell-49" class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    pd.Series(np.dot(trans2022_percent, population2022), index<span class="op">=</span>trans2022.index)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span> population2022</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="47">
+<pre><code>in/out
+Seoul                342,465.12
+Busan                187,797.21
+Daegu                116,366.09
+Incheon              -99,947.08
+Gwangju              130,326.03
+Daejeon              103,300.04
+Ulsan                 26,575.28
+Sejong                -1,103.00
+Gyeonggi-do         -675,340.22
+Gangwon-do           -15,393.96
+Chungcheongbuk-do    -50,269.42
+Chungcheongnam-do    -91,717.78
+Jeollabuk-do          34,717.46
+Jeollanam-do         -55,839.11
+Gyeongsangbuk-do       5,172.62
+Gyeongsangnam-do      40,487.32
+Jeju-do                2,403.40
+dtype: float64</code></pre>
+</div>
+</div>
+<ul>
+<li>예측 결과와 2022년 인구의 차를 구하면, 2022년보다 서울, 부산, 대구는 증가하고, 인천, 경기도는 감소</li>
+<li>이전에 시도별 인구 예측과 다른 결과</li>
+<li>왜?
+<ul>
+<li><ol type="1">
+<li>인구 이동이 시도별로 제한되어 있지 않고 해외로 이동 할 수 있음</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>좀 더 정확한 통계 데이터가 있었다면, 좀 더 정확한 인구 이동을 예측할 수 있음</li>
+</ol></li>
+</ul></li>
+<li>오차를 감안하고, 좀 더 진행</li>
+</ul>
+<div id="cell-51" class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>population_trans_10 <span class="op">=</span> pd.Series(</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    np.dot(np.linalg.matrix_power(trans2022_percent, <span class="dv">10</span>), population2022),</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>trans2022.index,</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>population_trans_10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="48">
+<pre><code>in/out
+Seoul                9,583,711.88
+Busan                4,035,160.79
+Daegu                2,755,036.14
+Incheon              2,620,567.07
+Gwangju              1,772,009.16
+Daejeon              1,635,241.08
+Ulsan                1,242,147.43
+Sejong                 380,625.97
+Gyeonggi-do         11,830,243.09
+Gangwon-do           1,452,452.31
+Chungcheongbuk-do    1,462,715.57
+Chungcheongnam-do    1,910,808.95
+Jeollabuk-do         1,868,923.60
+Jeollanam-do         1,813,847.21
+Gyeongsangbuk-do     2,760,675.42
+Gyeongsangnam-do     3,627,329.44
+Jeju-do                687,542.90
+dtype: float64</code></pre>
+</div>
+</div>
+<div id="cell-52" class="cell" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>population_trans_40 <span class="op">=</span> pd.Series(</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    np.dot(np.linalg.matrix_power(trans2022_percent, <span class="dv">40</span>), population2022),</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>trans2022.index,</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>population_trans_40</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="49">
+<pre><code>in/out
+Seoul                9,515,405.90
+Busan                4,108,709.06
+Daegu                2,786,914.64
+Incheon              2,598,500.56
+Gwangju              1,778,599.39
+Daejeon              1,627,679.62
+Ulsan                1,259,765.50
+Sejong                 378,880.13
+Gyeonggi-do         11,741,061.33
+Gangwon-do           1,443,122.07
+Chungcheongbuk-do    1,455,202.88
+Chungcheongnam-do    1,900,294.83
+Jeollabuk-do         1,863,544.92
+Jeollanam-do         1,820,304.92
+Gyeongsangbuk-do     2,787,467.64
+Gyeongsangnam-do     3,686,145.10
+Jeju-do                687,439.52
+dtype: float64</code></pre>
+</div>
+</div>
+</section>
+<section id="정확하지-않은데" class="level1">
+<h1>정확하지 않은데?</h1>
+<ul>
+<li>알고리즘이 아무리 정확해도, 데이터가 반영되지 못하면 문제가 발생</li>
+<li>데이터가 아무리 정확해도, 어리숙한 알고리즘을 사용하면 문제가 발생</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
