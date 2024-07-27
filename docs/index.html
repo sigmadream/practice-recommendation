@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.54">
+<meta name="generator" content="quarto-1.5.55">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -173,6 +173,12 @@ window.Quarto = {
  <span class="menu-text">추천 시스템 스터디 실습 예제 1</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./practice/practice02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">추천 시스템 스터디 실습 예제 2</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -190,6 +196,9 @@ window.Quarto = {
   <li><a href="#데이터분석에-대한-필요성" id="toc-데이터분석에-대한-필요성" class="nav-link" data-scroll-target="#데이터분석에-대한-필요성">데이터분석에 대한 필요성</a></li>
   <li><a href="#알고리즘에-대한-필요성" id="toc-알고리즘에-대한-필요성" class="nav-link" data-scroll-target="#알고리즘에-대한-필요성">알고리즘에 대한 필요성</a></li>
   <li><a href="#추천시스템의-종류" id="toc-추천시스템의-종류" class="nav-link" data-scroll-target="#추천시스템의-종류">추천시스템의 종류</a></li>
+  <li><a href="#추천시스템-구성" id="toc-추천시스템-구성" class="nav-link" data-scroll-target="#추천시스템-구성">추천시스템 구성</a></li>
+  <li><a href="#추천시스템을-바라보는-관점" id="toc-추천시스템을-바라보는-관점" class="nav-link" data-scroll-target="#추천시스템을-바라보는-관점">추천시스템을 바라보는 관점</a></li>
+  <li><a href="#알고리즘" id="toc-알고리즘" class="nav-link" data-scroll-target="#알고리즘">알고리즘</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -269,6 +278,108 @@ window.Quarto = {
 </ul></li>
 </ul>
 <p><code>[연습문제]</code> 추천시스템이 검색시스템과 어떤 차이가 있나요?</p>
+</section>
+<section id="추천시스템-구성" class="level3">
+<h3 class="anchored" data-anchor-id="추천시스템-구성">추천시스템 구성</h3>
+<ul>
+<li>사용자
+<ul>
+<li>서비스를 사용하는 사람 -아이템</li>
+<li>서비스에서 판매하는 물품</li>
+<li>다른 사용자</li>
+</ul></li>
+<li>[가정] 서비스가 성장하면 사용자/아이템도 함께 성장
+<ul>
+<li>사용자 성장</li>
+<li>아이템 디스커버리
+<ul>
+<li>모든 사용자가 검색을 하지 않음</li>
+<li>추천에 익숙해짐</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="추천시스템을-바라보는-관점" class="level3">
+<h3 class="anchored" data-anchor-id="추천시스템을-바라보는-관점">추천시스템을 바라보는 관점</h3>
+<ul>
+<li>매칭 문제
+<ul>
+<li>아이템 매칭</li>
+<li>어떻게 매칭할 것인가?
+<ul>
+<li>Top-K</li>
+<li>Last-K</li>
+<li>C.F</li>
+<li>Order</li>
+</ul></li>
+<li>부가 정보
+<ul>
+<li>아이템 분류 체계</li>
+<li>사용자 프로파일
+<ul>
+<li>개인정보(성별, 연령)</li>
+<li>아이템 정보(관심, 분류, 태그)</li>
+</ul></li>
+<li>기준
+<ul>
+<li>클릭, 매출, 소비, 평점</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="알고리즘" class="level3">
+<h3 class="anchored" data-anchor-id="알고리즘">알고리즘</h3>
+<ul>
+<li>컨텐츠 기반(아이템 기반)
+<ul>
+<li>비슷한 아이템을 기반으로 추천</li>
+<li>아이템 프로파일
+<ul>
+<li>분류체게, 키워드 등</li>
+<li>텍스트 처리가 필요
+<ul>
+<li>원핫 인코딩, TF-IDF, 임베딩…</li>
+<li>아이템 프로필을 행렬로 계산</li>
+</ul></li>
+<li>유사도 계산
+<ul>
+<li>Cosine, Pearson</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>협업 필터링(평점 기반)
+<ul>
+<li>다른 사용자들의 정보를 이용하여 내 취향을 예측
+<ul>
+<li>사용자 기반</li>
+<li>아이템 기반</li>
+</ul></li>
+<li>결국은 행렬 계산
+<ul>
+<li>사용자 기반
+<ul>
+<li>나와 비슷한 평점 패턴을 보이는 사람들을 찾아서 그 사람들이 높게 평가한 아이템 추천</li>
+</ul></li>
+<li>아이템 기반
+<ul>
+<li>평점의 패턴이 비슷한 아이템들을 찾아서 그걸 추천하는 방법</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>사용자 행동 기반
+<ul>
+<li>아이템 클릭 혹은 소비 정보를 기반으로 추천
+<ul>
+<li>아이템의 부가 정보가 필요</li>
+<li>구현이 간단하지만, 아주 유용함</li>
+</ul></li>
+<li>모델링을 통해 사용자와 아이템 페어에 대한 클릭 확률 등의 점수 계산이 가능
+<ul>
+<li>의사 결정 트리</li>
+</ul></li>
+</ul></li>
+</ul>
 
 
 </section>

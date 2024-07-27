@@ -17,6 +17,7 @@ website:
       - section: "예제"
         contents:
           - practice/practice01.ipynb
+          - practice/practice02.ipynb
 
 
 format:
