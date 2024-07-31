@@ -13,12 +13,13 @@ website:
     search: true
     collapse-level: 1
     contents:
-      - note/part_01a.qmd
+      - note/part_01.qmd
+      - note/part_02.qmd
       - section: "예제"
         contents:
           - practice/practice01.ipynb
           - practice/practice02.ipynb
-
+          - practice/practice03a.ipynb
 
 format:
   html:

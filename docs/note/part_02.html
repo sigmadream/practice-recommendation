@@ -8,7 +8,7 @@
 
 <meta name="author" content="Sangkon Han">
 
-<title>추천 시스템 스터디 Part1(a,b) – Study-SUSC</title>
+<title>추천 시스템 스터디 Part2 – Study-SUSC</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -68,6 +68,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -104,7 +133,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../note/part_01a.html">추천 시스템 스터디 Part1(a,b)</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../note/part_02.html">추천 시스템 스터디 Part2</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -126,8 +155,14 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../note/part_01a.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">추천 시스템 스터디 Part1(a,b)</span></a>
+  <a href="../note/part_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">추천 시스템 스터디 Part1</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../note/part_02.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">추천 시스템 스터디 Part2</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -151,6 +186,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">추천 시스템 스터디 실습 예제 2</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../practice/practice03a.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">추천 시스템 스터디 실습 예제 3</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -163,11 +204,21 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#재현-가능한-데이터-분석" id="toc-재현-가능한-데이터-분석" class="nav-link active" data-scroll-target="#재현-가능한-데이터-분석">재현 가능한 데이터 분석</a>
+  <li><a href="#데이터분석에-대한-필요성" id="toc-데이터분석에-대한-필요성" class="nav-link active" data-scroll-target="#데이터분석에-대한-필요성">데이터분석에 대한 필요성</a></li>
+  <li><a href="#알고리즘에-대한-필요성" id="toc-알고리즘에-대한-필요성" class="nav-link" data-scroll-target="#알고리즘에-대한-필요성">알고리즘에 대한 필요성</a>
   <ul class="collapse">
-  <li><a href="#주어진-가설을-검증-할-수-있어야-한다" id="toc-주어진-가설을-검증-할-수-있어야-한다" class="nav-link" data-scroll-target="#주어진-가설을-검증-할-수-있어야-한다">“주어진 가설을 검증 할 수 있어야 한다”</a></li>
-  <li><a href="#분석환경에-대해서-알아보자" id="toc-분석환경에-대해서-알아보자" class="nav-link" data-scroll-target="#분석환경에-대해서-알아보자">분석환경에 대해서 알아보자</a></li>
-  <li><a href="#faq" id="toc-faq" class="nav-link" data-scroll-target="#faq">FAQ</a></li>
+  <li><a href="#모든-것이-계산이고-우리느-그러한-계산을-알고리즘으로-부르기로-하였다." id="toc-모든-것이-계산이고-우리느-그러한-계산을-알고리즘으로-부르기로-하였다." class="nav-link" data-scroll-target="#모든-것이-계산이고-우리느-그러한-계산을-알고리즘으로-부르기로-하였다.">모든 것이 계산이고, 우리느 그러한 계산을 알고리즘으로 부르기로 하였다.</a></li>
+  </ul></li>
+  <li><a href="#추천시스템의-종류" id="toc-추천시스템의-종류" class="nav-link" data-scroll-target="#추천시스템의-종류">추천시스템의 종류</a></li>
+  <li><a href="#추천시스템-구성" id="toc-추천시스템-구성" class="nav-link" data-scroll-target="#추천시스템-구성">추천시스템 구성</a>
+  <ul class="collapse">
+  <li><a href="#핵심-구성-요소-사용자와-아이템" id="toc-핵심-구성-요소-사용자와-아이템" class="nav-link" data-scroll-target="#핵심-구성-요소-사용자와-아이템">핵심 구성 요소 ‘사용자와 아이템’</a></li>
+  <li><a href="#추천시스템을-바라보는-관점" id="toc-추천시스템을-바라보는-관점" class="nav-link" data-scroll-target="#추천시스템을-바라보는-관점">추천시스템을 바라보는 관점</a></li>
+  </ul></li>
+  <li><a href="#추천시스템-알고리즘" id="toc-추천시스템-알고리즘" class="nav-link" data-scroll-target="#추천시스템-알고리즘">추천시스템 알고리즘</a>
+  <ul class="collapse">
+  <li><a href="#내용content-기반아이템-기반" id="toc-내용content-기반아이템-기반" class="nav-link" data-scroll-target="#내용content-기반아이템-기반">내용(content) 기반(아이템 기반)</a></li>
+  <li><a href="#협조collaborative-기반" id="toc-협조collaborative-기반" class="nav-link" data-scroll-target="#협조collaborative-기반">협조(collaborative) 기반</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -177,7 +228,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">추천 시스템 스터디 Part1(a,b)</h1>
+<h1 class="title">추천 시스템 스터디 Part2</h1>
 </div>
 
 
@@ -200,140 +251,172 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="재현-가능한-데이터-분석" class="level2">
-<h2 class="anchored" data-anchor-id="재현-가능한-데이터-분석">재현 가능한 데이터 분석</h2>
-<section id="주어진-가설을-검증-할-수-있어야-한다" class="level3">
-<h3 class="anchored" data-anchor-id="주어진-가설을-검증-할-수-있어야-한다">“주어진 가설을 검증 할 수 있어야 한다”</h3>
-<p>많은 데이터 분서가들은 “2024년 여름 트랜드는 무엇인가요?”라는 질문을 2023년 9월쯤에 받게됩니다. 이 질문에 답변은 쉽지만, 어렵습니다. 왜냐하면 2024년 여름 트랜드에 대한 하나의 거대한 합의가 이뤄진 시점이라면 잡지나, 특정 도메인 영역에 있는 전문가들에게 인터뷰를 통해서 쉽게 알아낼 수 있기 때문입니다. 문제는 그러한 답변을 데이터로 뒷받침하기 위해선 전혀 다른 고민이 필요하기 때문입니다. 모든 일의 시작은 질문을 하는 것에서 출발하고, 질문에 대한 대답을 하나의 가설로 가정하고, 그 가설에 적합한 자료를 찾아야 합니다. 모든 데이터 분석가들은 자신의 주장에 대해서 “검증 가능한 자료”와 “방법”을 제시해야 합니다. 어쩌면 이런 일은 AI 시대를 건너야 하는 모든 사람들의 숙명이 될지도 모릅니다.</p>
+<section id="데이터분석에-대한-필요성" class="level2">
+<h2 class="anchored" data-anchor-id="데이터분석에-대한-필요성">데이터분석에 대한 필요성</h2>
+<p>추천시스템의 기본적인 아이디어는 “다양한 데이터 소스를 활용해 고객의 관심을 추론”하는 것입니다. 과거 관심사와 성향이 미래 선택에 대한 좋은 방향성을 제시해주는 경우가 많기 때문에 추천에 관련된 분석은 흔히 사용자와 아이템 간의 “과거”의 상호작용에 기반한다고 가정하고 있습니다. 예외적으로 지식 기반 추천 시스템의 경우인데, 이때는 사용자의 과거 이력보다는 사용자가 지정한 요구 사항에 따라 제안됩니다.</p>
+<p>모든 추천시스템의 시작은 “과거 데이터”와 “사용자 데이터”의 의존성을 가정하기 때문에, 해당 데이터를 다루는 것에서 시작됩니다.</p>
+</section>
+<section id="알고리즘에-대한-필요성" class="level2">
+<h2 class="anchored" data-anchor-id="알고리즘에-대한-필요성">알고리즘에 대한 필요성</h2>
+<p>1990년대 인터넷의 발전과 함께 다양한 것이 정보화 되고 거기에 접근할 수 있게 되면서 여러 후보 가운데 가치 있는것을 선정하는 기술이 중요해졌습니다. 제록스 팔로알토 연구소의 연구자 골드버그(Goldberg)는 대표적인 추천 알고리즘의 하나인 협조필터링<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>을 처음으로 적용한 추천시스템을 제안하였습니다. 이 알고리즘은 전자 메일 중에서 유익한 메일을 선택하는 것으로, 필터 처리만으로는 유익한 메일을 찾아내는 것이 어렵기 때문에 협조 필터링을 사용한 메일 스코어링(scoring)을 계산하는 것이 핵심 골자입니다.</p>
+<section id="모든-것이-계산이고-우리느-그러한-계산을-알고리즘으로-부르기로-하였다." class="level3">
+<h3 class="anchored" data-anchor-id="모든-것이-계산이고-우리느-그러한-계산을-알고리즘으로-부르기로-하였다.">모든 것이 계산이고, 우리느 그러한 계산을 알고리즘으로 부르기로 하였다.</h3>
+<p>대부분의 추천시스템은 이런 형태의 알고리즘을 필요로 합니다. 그리고 많은 문제는 주어진 알고리즘을 그대로 활용하기 보다는 적당한 수준에서 변경(<code>trade-off</code>)를 필요로 합니다. 따라서 많은 알고리즘을 알면 좋지만, 가장 널리 사용되는 알고리즘을 활용하는 것도 중요합니다. 일반적으로 계산 알고리즘을 변용하는 과정에서 발생하는 몇가지 문제를 쉽게 예상하고 해결하기 위해서 입니다.</p>
+<p>주어진 문제를 어떻게 해결할 것인가에 대해선 해당 문제를 해결하는 전문가의 몫이라 할 수 있습니다. 그리고 이런 자유도가 주어졌을 때, 전문가의 선택을 가장 많이 받은 것들을 알아둘 필요가 있습니다. 모든 일은 협업이니까요.</p>
+<p>아쉽게도 우리는 스터디를 진행하기 때문에 문제를 ‘잘’ 해결하는 것에 주력을 하는 것이 아니라, 문제를 해결하는 것에 집중하도록 하겠습니다. 그래서 가능하다면 널리 사용되는 알고리즘을 활용하는 방향으로 진행하도록 하겠습니다.</p>
+</section>
+</section>
+<section id="추천시스템의-종류" class="level2">
+<h2 class="anchored" data-anchor-id="추천시스템의-종류">추천시스템의 종류</h2>
+<p>일반적으로 추천 시스템은 <code>입력-프로세스-출력</code>의 3가지 요소로 정리할 수 있습니다. 당연한 이야기처럼 느껴지겠지만, 이런 분류를 이해하지 못하면 전혀 어뚱한 시스템을 설계하게 됩니다.</p>
 <ul>
-<li>예제01. 검증을 위해서 우리가 해야 하는 행동
+<li>입력
 <ul>
-<li>백데이터 수집
-<ul>
-<li>도메인 영역에서 가장 앞선 혹은 선행된 지표를 확인</li>
+<li>콘텐츠 =&gt; 내용 기반 필터링(CBF)</li>
+<li>행위 =&gt; 협조 필터링(CF)</li>
 </ul></li>
-<li>가설 검증
+<li>프로세스
 <ul>
-<li>검증해야 되는 대상을 정의</li>
-<li>검증방법을 결정
+<li>경향성 =&gt; Top-<span class="math inline">\(K\)</span>
 <ul>
-<li><ol type="1">
-<li>전문가 집단 조사</li>
-</ol></li>
-<li><ol start="2" type="1">
-<li>면담</li>
-</ol></li>
+<li><a href="https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=a401596b7c337afefe0ea228ef9cd4908429b43a" class="uri">https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=a401596b7c337afefe0ea228ef9cd4908429b43a</a></li>
+<li><a href="https://link.springer.com/content/pdf/10.1007/s10115-007-0114-2.pdf" class="uri">https://link.springer.com/content/pdf/10.1007/s10115-007-0114-2.pdf</a></li>
 </ul></li>
+<li>연관성 =&gt; 유사도</li>
+<li>개인화 =&gt; 협조 필터</li>
 </ul></li>
-<li>시각화를 통해서 자료를 수정</li>
-<li>담당자에게 여러분이 만든 자료를 설명해서 여러분의 의견을 전달</li>
-</ul></li>
-<li>유제01. “출생아수가 줄어들고 있습니다.”
+<li>출력
 <ul>
-<li>백데이터 수집
-<ul>
-<li>KOSIS(국가 통계 포털)</li>
+<li>빈도적 =&gt; 특징 시점</li>
+<li>즉시적 =&gt; 사이드바</li>
+<li>비즉시적 =&gt; 메일, 메시지</li>
 </ul></li>
-<li>“출생아수가 줄어들고 있습니다”
+</ul>
+<p><code>[연습문제]</code> 추천시스템이 검색시스템과 어떤 차이가 있나요?</p>
+<p>추천 시스템은 사용자에게 적절한 선택지를 제안하는 데 중점을 두고, 검색 시스템은 사용자가 요청한 정보를 정확하게 찾는 데 중점을 둡니다.</p>
 <ul>
-<li>출생아수 =&gt; 태어나는 모든 아기</li>
-<li>줄어든다 =&gt; 시계열(특정 시점에서 특정 시점까지 기울기가 음수)</li>
-</ul></li>
-<li>시각화
+<li>사용자 의도와 입력
 <ul>
-<li><ol type="1">
-<li>단순 시각화</li>
-</ol></li>
-<li><ol start="2" type="1">
-<li>인터렉션</li>
-</ol></li>
+<li>추천 시스템: 사용자 입력이 명확하지 않거나 없습니다. 시스템은 사용자의 과거 행동, 선호도, 인구 통계학적 정보 등을 기반으로 적절한 항목을 예측하고 제안합니다.</li>
+<li>검색 시스템: 사용자 입력이 명확합니다. 사용자가 특정한 정보를 찾기 위해 키워드나 문장을 입력하면, 시스템은 그에 맞는 결과를 반환합니다.</li>
 </ul></li>
-<li>전달
+<li>데이터 처리와 알고리즘
 <ul>
-<li>줄어들고 있다(사실)</li>
-<li>“OO에서는 출생아수가 다른 OO에 비해서 완만하다”(의견)</li>
+<li>추천 시스템: 협업 필터링, 콘텐츠 기반 필터링, 하이브리드 방식 등 다양한 알고리즘을 사용하여 개인화된 추천을 제공합니다. 대규모 데이터 분석과 사용자 행동 패턴을 학습하여 정확도를 높입니다.</li>
+<li>검색 시스템: 검색어와 관련된 문서를 찾기 위해 인덱싱된 데이터를 검색합니다. 주로 TF-IDF, PageRank와 같은 알고리즘을 사용하여 관련성을 판단합니다.</li>
 </ul></li>
+<li>결과의 성격
+<ul>
+<li>추천 시스템: 사용자가 명확하게 요청하지 않은 항목들을 제안합니다. 예를 들어, 사용자가 어떤 영화를 볼지 모르고 있을 때 관련 영화를 추천합니다.</li>
+<li>검색 시스템: 사용자가 명확하게 요청한 정보를 제공합니다. 예를 들어, 사용자가 특정 영화의 정보를 검색하면 그 영화에 대한 구체적인 결과를 반환합니다.</li>
+</ul></li>
+<li><a href="https://www.sciencedirect.com/science/article/pii/S1110866515000341#s0165" class="uri">https://www.sciencedirect.com/science/article/pii/S1110866515000341#s0165</a></li>
+</ul>
+</section>
+<section id="추천시스템-구성" class="level2">
+<h2 class="anchored" data-anchor-id="추천시스템-구성">추천시스템 구성</h2>
+<section id="핵심-구성-요소-사용자와-아이템" class="level3">
+<h3 class="anchored" data-anchor-id="핵심-구성-요소-사용자와-아이템">핵심 구성 요소 ‘사용자와 아이템’</h3>
+<ul>
+<li>사용자
+<ul>
+<li>서비스를 사용하는 사람 -아이템</li>
+<li>서비스에서 판매하는 물품</li>
+<li>혹은 다른 사용자</li>
+</ul></li>
+</ul>
+<p>[가정] 서비스가 성장하면 사용자/아이템도 함께 성장 - 사용자는 성장 - 사용자가 갑자기 검색을 하지 않음 - 아이템은 거대해짐 - 검색 결과가 많아짐</p>
+</section>
+<section id="추천시스템을-바라보는-관점" class="level3">
+<h3 class="anchored" data-anchor-id="추천시스템을-바라보는-관점">추천시스템을 바라보는 관점</h3>
+<p>추천시스템은 하나의 거대한 매칭(matching) 문제로 간주할 필요가 있음 - 어떻게 매칭할 것인가? - Top-K - Last-K - C.F - Order - 부가 정보 - 아이템 분류 체계 - 사용자 프로파일 - 개인정보(성별, 연령) - 아이템 정보(관심, 분류, 태그) - 기준 - 클릭, 매출, 소비, 평점</p>
+</section>
+</section>
+<section id="추천시스템-알고리즘" class="level2">
+<h2 class="anchored" data-anchor-id="추천시스템-알고리즘">추천시스템 알고리즘</h2>
+<section id="내용content-기반아이템-기반" class="level3">
+<h3 class="anchored" data-anchor-id="내용content-기반아이템-기반">내용(content) 기반(아이템 기반)</h3>
+<p>내용기반 필터링은 사용자가 어떤 내용의 아이템을 좋아하는지 나타내는 사용자 프로필과 아이템의 다양한 성질을 나타내는 특징을 추출한 아이템 특징과의 일치도 즉, 유사도를 계산함으로써 좋아할 만한 아이템을 사용자에게 추천하는 알고리즘입니다.</p>
+<ul>
+<li>비슷한 아이템을 기반으로 추천</li>
+<li>사용자의 선호도를 나타내는 사용자 프로필 획득 방법은 크게 2가지
+<ul>
+<li>사용자의 과거 행동 이력에 기반해 사용자 프로필을 작성하는 간접 지정형</li>
+<li>사용자에게 자신이 선호하는 아이템의 특징을 명시적으로 지정하도록하는 직접 지정형</li>
 </ul></li>
 </ul>
 </section>
-<section id="분석환경에-대해서-알아보자" class="level3">
-<h3 class="anchored" data-anchor-id="분석환경에-대해서-알아보자">분석환경에 대해서 알아보자</h3>
-<ul>
-<li>예제2. <code>R</code> 개발 환경은 어떻게 구성될까?
-<ul>
-<li>R(언어), RStudio(IDE), renv(개발환경구성)
-<ul>
-<li><code>R</code>이 통계학에서 사용하는 좋은 패키지를 잔뜩 가지고 있음</li>
-<li><code>ggplot</code>이라고 하는 그래프 라이브러리도 있음</li>
-<li><code>dataframe</code>이라고 하는 나름의 데이터구조도 활용할 수 있음</li>
-</ul></li>
-</ul></li>
-<li>유제2. <code>Python</code> 개발 환경은 어떻게 구성될까?
-<ul>
-<li>Python(언어), VSCode/Colab/PyCharm(IDE), venv(개발환경구성)
-<ul>
-<li>Python이 머신러닝/딥러닝에서 사용하는 좋은 라이브러리를 잔뜩 가지고 있음</li>
-<li>matplotlib/seaborn/pyplot이라고 하는 그래프 라이브러리도 있음</li>
-<li>List/Dict라고하는 나름의 좋은 데이터구조를 가지고 있음</li>
-</ul></li>
-</ul></li>
-<li>연습1. Python 개발 환경은 어떻게 구성될까?
-<ul>
-<li>Python(언어), VSCode, venv(개발환경구성) =&gt; 예, 문제가 없어요!
-<ul>
-<li>Pandas라고하는 좋은 분석도구를 사용</li>
-</ul></li>
-<li>Solve) 개발환경 구성
-<ul>
-<li>1)Python, VSCode를 설치하세요.</li>
-<li>2)VSCode 실행 후에 <code>File &gt; Open Folder</code>를 이용해서 작업 환경을 구성하세요</li>
-<li>3)VSCode에 필요한 확장 프로그램(Python, Jupyter)를 설치하세요.</li>
-<li>5)<code>View &gt; Command Palette</code> &gt; <code>Python: Create Envir...</code></li>
-<li>6)<code>day01.ipynb</code>(확장자!)를 만들어서, 커널을 선택하세요.</li>
-<li>7)<code>print("Hello, World")</code> 실행 확인 하시면 됩니다.</li>
-</ul></li>
-</ul></li>
-<li>연습2. 데이터 분석 폴더
-<ul>
-<li>모든 데이터는 <code>data</code>에 두도록 하세요.</li>
-<li>만들어진 모든 산출물은 <code>output</code>에 두도록 하세요.</li>
-<li>첨부되어진 모든 파일은 <code>static</code> 또는 <code>files</code>등을 활용하세요.</li>
-</ul></li>
-<li>연습3. 파이썬 패키지 설치
-<ul>
-<li><code>pip</code>를 활용
-<ul>
-<li>pip list</li>
-<li>pip freeze</li>
-<li>pip install</li>
-</ul></li>
-<li><code>pip install pandas</code>
-<ul>
-<li>numpy&gt;=1.23.2</li>
-<li>python-dateutil&gt;=2.8.2</li>
-<li>pytz&gt;=2020.1</li>
-<li>tzdata&gt;=2022.7</li>
-</ul></li>
-<li><code>pip install seaborn</code></li>
-<li><code>pip install openpyxl</code></li>
-</ul></li>
-</ul>
-</section>
-<section id="faq" class="level3">
-<h3 class="anchored" data-anchor-id="faq">FAQ</h3>
-<pre><code>- a) VSCode가 문제다!
-    - VSCode가 "텍스트 편집기"
-    - VSCode에 확장 프로그램을 설치해서, 마치 IDE인 것처럼 사용
-- b) 아저씨, 저 파이썬이 이상해요!
-    - 아나콘다(Anaconda), 여러분이 뭘 필요로 하는지 모르지만, 모든 걸 다 설치해두었음
-- c) 이렇게 복잡하게 할 필요가 있나요?
-    - 재현 가능!</code></pre>
+<section id="협조collaborative-기반" class="level3">
+<h3 class="anchored" data-anchor-id="협조collaborative-기반">협조(collaborative) 기반</h3>
+<p>협조 필터링은 자신과 선호도가 비슷한 사용자의 과거 행동을 기반으로 얻어진 기호 경향을 활용하여 추천하는 알고리즘입니다. 협조 필터링은 메모리 기반 방법과 모델 기반 방법의 2가지로 나뉩니다.</p>
+<p>메모리기반 방법은 추천받을 사용자와 선호도가 비슷한 사용자에 착안하여 추천을 수행하는 사용자-사용자 메모리 기반 방법과 추천받을 사용자가 선호하는 아이템과 비슷한 아이템에 착안하여 추천하는 아이템-아이템 메모리 기반 방법이 있습니다.</p>
+<p>협조필터링에서는 서비스내 다른사용자의 과거 행동이력 등으로부터 선호도 경향을 추정하여 추천에 사용했습니다. 이렇게 사용자로부터 얻은 아이템에 대한 선호도 정보를 기호 데이터(preference data)라 부릅니다. 기호 데이터를 획득하는 방법은 크게 명시적 피드백(explicit feedback)과 암묵적 피드백(implicit feedback)으로 나눌 수 있습니다.</p>
+<p>수집한 기호데이터 등에 기반해 사용자가 해당 아이템의 선호도 정도를 정량적으로 나타낸 것 을 평가값이라 합니다. 그리고그 평갓값을 성분으로하는 사용자 <span class="math inline">\(\times\)</span> 아이템의 행렬을 평갓 값 행렬(rating matrix)이라고 합니다.</p>
+<section id="모델-기반-방법-알고리즘개요" class="level4">
+<h4 class="anchored" data-anchor-id="모델-기반-방법-알고리즘개요">모델 기반 방법 알고리즘개요</h4>
+<p>협조필터링 중에서도 모델 기반 방법은 이미 알고 있는 데이터의 규칙성을 학습한 모델을 미리 만들어둠으로써 모르는 아이템의 평갓값을 예측하여 추천하는 방법이었습니다. 예측에 사용하는 모델에는 클러스터링을 사용한 모델이나 회귀 문제 및 분류 문제로 평갓값을 직접 예측하는 토픽 모델(Topic Model)을 사용한 모델이나 행렬 분해(Factorization)를 사용한 모델 등 다양한 모델이 존재합니다.</p>
+<p>평갓값을 회귀 문제나 분류 문제로 직접 예측하는 모델에서는 예를 들어 선형 회귀 등의 회귀모델을 사용해 과거 사용자로부터 얻은 아이템의 평갓값 데이터를 훈련 데이터로 하여 모델을 학습함으로써 모르는 아이템에 대한 평갓값을 예측합니다.</p>
+<p>토픽 모델을 사용하면 평갓값 행렬을 차원 압축함으로써 잠재적인 의미를 표현하는 정보를 취득해 추천에 사용합니다. 행렬 분해에서는 평갓값 행렬을 그 곱이 원래의 행렬을 최대한 재현하는 형태로 하여 사용자 행렬과 아이템 행렬로 분해합니다.</p>
+<p>분해된 행렬에서 얻은사용자 벡터와 아이템 벡터의 유사도 계산을 통해 임의의 아이템에 대한 예측 평갓값을 계산합니다. 또 분해에서 얻은사용자 벡터와 아이템 백터를 다른 알고리즘의 입력으로 사용하기도 합니다.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>주요특성</th>
+<th style="text-align: center;">협조 필터링</th>
+<th style="text-align: center;">내용기반 필터링</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>다양성</td>
+<td style="text-align: center;">O</td>
+<td style="text-align: center;">X</td>
+</tr>
+<tr class="even">
+<td>도메인 지식 취급 비용</td>
+<td style="text-align: center;">O</td>
+<td style="text-align: center;">X</td>
+</tr>
+<tr class="odd">
+<td>콜드 스타트 문제에 대한 대응</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">?</td>
+</tr>
+<tr class="even">
+<td>사용자 수가 적은 서비스에서의 추천</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">O</td>
+</tr>
+<tr class="odd">
+<td>커버리지 향상</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">O</td>
+</tr>
+<tr class="even">
+<td>아이템 특징활용</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">O</td>
+</tr>
+<tr class="odd">
+<td>예측 정확도</td>
+<td style="text-align: center;">O</td>
+<td style="text-align: center;">?</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
 </section>
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>https://dl.acm.org/doi/10.1145/138859.138867<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

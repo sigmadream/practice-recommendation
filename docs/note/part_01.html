@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Sangkon Han">
 
-<title>Study-SUSC</title>
+<title>추천 시스템 스터디 Part1 – Study-SUSC</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,22 +24,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -67,37 +68,8 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-sidebar docked nav-fixed">
@@ -107,7 +79,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Study-SUSC</span>
     </a>
   </div>
@@ -118,7 +90,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
 </ul>
@@ -132,7 +104,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Study-SUSC</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../note/part_01.html">추천 시스템 스터디 Part1</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -154,13 +126,13 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./note/part_01.html" class="sidebar-item-text sidebar-link">
+  <a href="../note/part_01.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">추천 시스템 스터디 Part1</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./note/part_02.html" class="sidebar-item-text sidebar-link">
+  <a href="../note/part_02.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">추천 시스템 스터디 Part2</span></a>
   </div>
 </li>
@@ -175,19 +147,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./practice/practice01.html" class="sidebar-item-text sidebar-link">
+  <a href="../practice/practice01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">추천 시스템 스터디 실습 예제 1</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./practice/practice02.html" class="sidebar-item-text sidebar-link">
+  <a href="../practice/practice02.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">추천 시스템 스터디 실습 예제 2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./practice/practice03a.html" class="sidebar-item-text sidebar-link">
+  <a href="../practice/practice03a.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">추천 시스템 스터디 실습 예제 3</span></a>
   </div>
 </li>
@@ -198,21 +170,40 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#재현-가능한-데이터-분석" id="toc-재현-가능한-데이터-분석" class="nav-link active" data-scroll-target="#재현-가능한-데이터-분석">재현 가능한 데이터 분석</a>
+  <ul class="collapse">
+  <li><a href="#주어진-가설을-검증-할-수-있어야-한다" id="toc-주어진-가설을-검증-할-수-있어야-한다" class="nav-link" data-scroll-target="#주어진-가설을-검증-할-수-있어야-한다">“주어진 가설을 검증 할 수 있어야 한다”</a></li>
+  </ul></li>
+  <li><a href="#분석환경" id="toc-분석환경" class="nav-link" data-scroll-target="#분석환경">분석환경</a>
+  <ul class="collapse">
+  <li><a href="#faq" id="toc-faq" class="nav-link" data-scroll-target="#faq">FAQ</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Study-SUSC</h1>
+<h1 class="title">추천 시스템 스터디 Part1</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sangkon Han </p>
+          </div>
+  </div>
     
   
     
@@ -223,35 +214,160 @@ window.Quarto = {
 </header>
 
 
-<p>안녕하세요. 대학 IT 동아리 연합인 <code>SUSC</code>에서 주관하는 이번 스터디는 파이썬으로 기반으로 한 추천시스템 입니다. 해당 스터디는 추천시스템에 대한 정의를 일반적<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>이고 학술적인 형태가 아닌 조작적으로 정의하였습니다. 조작적 정의이기 때문에 어딘가서 아래와 같은 <code>정의</code>를 사용하실 때 주의를 해야겠지만, 아마 날 것에 가까운 정의라서 스터디를 진행하는데 훨씬 자유도가 높을 것으로 기대합니다. 합의되지 않은 용어를 사용하고 있어서, 약간은 불편하실 수 있지만, “스터디”에 필요한 내용을 기반으로 간단하게 이번 스터디에 학습하는 내용을 간략하게 소개해보도록 하겠습니다.</p>
-<blockquote class="blockquote">
-<p>[정의] 추천시스템은 여러 가능성 가운데, 몇가지 가치 있는 것을 선별, 그 중에서 <span class="math inline">\(n\)</span>개를 선정하는 의사 결정을 도와주는 시스템 또는 방법</p>
-</blockquote>
+<section id="재현-가능한-데이터-분석" class="level2">
+<h2 class="anchored" data-anchor-id="재현-가능한-데이터-분석">재현 가능한 데이터 분석</h2>
+<p>많은 데이터 분서가들은 “2024년 여름 트랜드는 무엇인가요?”라는 질문을 2023년 9월쯤에 받게 됩니다. 이 질문에 답변은 쉽지만, 어렵습니다. 2024년 여름 트랜드에 대한 하나의 거대한 합의가 이뤄진 시점이라면 잡지나, 특정 도메인 영역에 있는 전문가들에게 인터뷰를 통해서 쉽게 알아낼 수 있기 때문입니다. 반면, 그 인터뷰를 의사결정에 활용하는 과정에서 답변을 데이터로 뒷받침하기 위해선 전혀 다른 고민이 필요합니다.</p>
+<p>모든 일의 시작은 질문을 하는 것에서 출발하고, 질문에 대한 대답을 하나의 가설로 가정하고, 그 가설에 적합한 자료를 찾아야 합니다. 그리고 그 가설은 검증 가능해야 합니다. 혹자는 좋은 안목과 도메인에 대한 통찰이 필요하다고 할 수 있지만, 그러한 영역에서 현재의 우리가 끼어들 여지는 없습니다. 따라서, 현재 우리는 “검증 가능한 가설”을 기준으로 업무를 진행해야 합니다.</p>
+<section id="주어진-가설을-검증-할-수-있어야-한다" class="level3">
+<h3 class="anchored" data-anchor-id="주어진-가설을-검증-할-수-있어야-한다">“주어진 가설을 검증 할 수 있어야 한다”</h3>
+<p>모든 데이터 분석가들은 자신의 주장에 대해서 “검증 가능한 자료”와 “방법”을 제시해야 합니다. 어쩌면 이런 일은 AI 시대를 건너야 하는 모든 사람들의 숙명이 될지도 모릅니다.</p>
 <ul>
-<li>여러 가능성 가운데, 몇가지 가치 있는 것을 선별
+<li>[예제01] 검증을 위해서 우리가 해야 하는 행동
 <ul>
-<li>가능성을 정의하는 기준에 따라 다양한 방법을 활용할 수 있는데, 단순한 방법(Top-<span class="math inline">\(K\)</span>)에서, 복잡한 방법(Factorization Machines) 등 가능성을 계산만 할 수 있다면 어떤 것도 가능</li>
+<li>데이터 수집
+<ul>
+<li>도메인 영역에서 가장 앞선 혹은 선행된 지표를 확인</li>
 </ul></li>
-<li>그 중에서 <span class="math inline">\(n\)</span>개를 선정
+<li>가설 검증
 <ul>
-<li>목적에 맞춰 알고리즘을 적절하게 선택해서 사용</li>
+<li>검증해야 되는 대상을 정의</li>
+<li>검증방법을 결정
+<ul>
+<li><ol type="1">
+<li>전문가 집단 조사</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>면담</li>
+</ol></li>
 </ul></li>
-<li>의사 결정을 도와주는
+</ul></li>
+<li>시각화를 통해서 자료 검토 및 수정</li>
+<li>보고서를 작성하여 의견을 전달 및 검토</li>
+</ul></li>
+<li>[유제01] “출생아수가 줄어들고 있습니다”를 검증하세요.
 <ul>
-<li>사용자의 의사 결정 과정에서 큰 영향력을 발휘하는게 목표로 선택한 항목을 사용자가 실제로 활용하는 것을 최종 목표로 함</li>
+<li>데이터 수집
+<ul>
+<li>KOSIS(국가 통계 포털)</li>
+</ul></li>
+<li>“출생아수가 줄어들고 있습니다”
+<ul>
+<li>출생아수 =&gt; 태어나는 모든 아기</li>
+<li>줄어든다 =&gt; 시계열(특정 시점에서 특정 시점까지 기울기가 음수)</li>
+</ul></li>
+<li>시각화
+<ul>
+<li><ol type="1">
+<li>단순 시각화</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>인터렉션</li>
+</ol></li>
+</ul></li>
+<li>전달
+<ul>
+<li>줄어들고 있다(사실)</li>
+<li>“OO에서는 출생아수가 다른 OO에 비해서 완만하다”(의견)</li>
+</ul></li>
 </ul></li>
 </ul>
-<p>정의에 따라서 앞선 3가지 주요 주제를 핵심적으로 다루고 있습니다. 코드 기반으로 진행될 예정입니다. 참석하시는 분들에게 약간의 도움이 되었기를 기대합니다.</p>
-
-
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>https://files.grouplens.org/papers/Konstan-Summer-01<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</section>
+</section>
+<section id="분석환경" class="level2">
+<h2 class="anchored" data-anchor-id="분석환경">분석환경</h2>
+<p>데이터 분석은 엑셀로 가능합니다. 혹은 프린트해서 컴퍼스와 자를 가지고도 가능합니다. 그럼에도 불구하고 도구를 사용하는 것은 엑셀이나, 컴퍼스와 자에 비해서 훨씬 좋은 결과를 기대하고, 과정을 계획할 수 있기 때문입니다. 따라서 분석환경은 중요합니다.</p>
+<p>일단, 전 세계적으로 가장 많은 분석가들이 채택하는 <code>R</code>에 대해서 간략하게 알아보겠습니다.</p>
+<ul>
+<li>[예제2] <code>R</code> 개발 환경은 어떻게 구성될까?
+<ul>
+<li>R(언어), RStudio(IDE), renv(환경)
+<ul>
+<li><code>R</code>이 통계학에서 사용하는 좋은 패키지를 잔뜩 가지고 있음</li>
+<li><code>ggplot</code>이라고 하는 그래프 라이브러리도 있음</li>
+<li><code>dataframe</code>이라고 하는 나름의 데이터구조도 활용할 수 있음</li>
+</ul></li>
+</ul></li>
+<li>[유제2] <code>Python</code> 개발 환경은 어떻게 구성될까?
+<ul>
+<li>Python(언어), VSCode/Colab/PyCharm(IDE), venv(개발환경구성)
+<ul>
+<li>Python이 머신러닝/딥러닝에서 사용하는 좋은 라이브러리를 잔뜩 가지고 있음</li>
+<li>matplotlib/seaborn/pyplot이라고 하는 그래프 라이브러리도 있음</li>
+<li>List/Dict라고하는 나름의 좋은 데이터구조를 가지고 있음</li>
+</ul></li>
+</ul></li>
+<li>[연습1] Python 개발 환경은 어떻게 구성될까?
+<ul>
+<li>Python(언어), VSCode, venv(개발환경구성) =&gt; 예, 문제가 없어요!
+<ul>
+<li>Pandas라고하는 좋은 분석도구를 사용</li>
+</ul></li>
+<li>Solve) 개발환경 구성
+<ul>
+<li>1)Python, VSCode를 설치하세요.</li>
+<li>2)VSCode 실행 후에 <code>File &gt; Open Folder</code>를 이용해서 작업 환경을 구성하세요</li>
+<li>3)VSCode에 필요한 확장 프로그램(Python, Jupyter)를 설치하세요.</li>
+<li>5)<code>View &gt; Command Palette</code> &gt; <code>Python: Create Envir...</code></li>
+<li>6)<code>day01.ipynb</code>(확장자!)를 만들어서, 커널을 선택하세요.</li>
+<li>7)<code>print("Hello, World")</code> 실행 확인 하시면 됩니다.</li>
+</ul></li>
+</ul></li>
+<li>[연습2] 데이터 분석 폴더
+<ul>
+<li>모든 데이터는 <code>data</code>에 두도록 하세요.</li>
+<li>만들어진 모든 산출물은 <code>output</code>에 두도록 하세요.</li>
+<li>첨부되어진 모든 파일은 <code>static</code> 또는 <code>files</code>등을 활용하세요.</li>
+</ul></li>
+<li>[연습3] 파이썬 패키지 설치
+<ul>
+<li><code>pip</code>를 활용
+<ul>
+<li>pip list</li>
+<li>pip freeze</li>
+<li>pip install</li>
+</ul></li>
+<li><code>pip install pandas</code>
+<ul>
+<li>numpy&gt;=1.23.2</li>
+<li>python-dateutil&gt;=2.8.2</li>
+<li>pytz&gt;=2020.1</li>
+<li>tzdata&gt;=2022.7</li>
+</ul></li>
+<li><code>pip install seaborn</code></li>
+<li><code>pip install openpyxl</code></li>
+</ul></li>
+</ul>
+<section id="faq" class="level3">
+<h3 class="anchored" data-anchor-id="faq">FAQ</h3>
+<ul>
+<li><ol type="a">
+<li>VSCode가 문제다!</li>
 </ol>
-</section></div></main> <!-- /main -->
+<ul>
+<li>VSCode가 “텍스트 편집기”</li>
+<li>VSCode에 확장 프로그램을 설치해서, 마치 IDE인 것처럼 사용</li>
+</ul></li>
+<li><ol start="2" type="a">
+<li>저 파이썬이 이상해요!</li>
+</ol>
+<ul>
+<li>아나콘다(Anaconda), 여러분이 뭘 필요로 하는지 모르지만, 모든 걸 다 설치해두었음</li>
+<li>단, 아나콘다를 사용하실 경우 기존에 설치된 파이썬과 충돌이 나지 않도록 주의</li>
+</ul></li>
+<li><ol start="3" type="a">
+<li>이렇게 복잡하게 할 필요가 있나요?</li>
+</ol>
+<ul>
+<li>재현 가능!</li>
+<li>내가 복잡하더라도, 상대방이 편리하다면 복잡성을 받아들일 자세가 되어있음</li>
+</ul></li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
