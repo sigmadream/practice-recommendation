@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.55">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -225,7 +225,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../practice/practice03a.html" class="sidebar-item-text sidebar-link">
+  <a href="../practice/practice03.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">추천 시스템 스터디 실습 예제 3</span></a>
   </div>
 </li>
@@ -280,9 +280,7 @@ window.Quarto = {
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> koreanize_matplotlib</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-2" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trans2022 <span class="op">=</span> pd.read_excel(</span>
@@ -1404,9 +1402,9 @@ dtype: int64</code></pre>
 dtype: float64</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+<pre><code>C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
   l.append(float(est.predict(np.array([1, year]))))
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
   l.append(float(est.predict(np.array([1, year]))))</code></pre>
 </div>
 </div>
@@ -1746,9 +1744,9 @@ C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\2056355179.py:9: DeprecationWar
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>birth_predict[<span class="st">"2024"</span>] <span class="op">=</span> predict(birth, <span class="dv">2024</span>)</span>
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>birth_predict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+<pre><code>C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
   l.append(float(est.predict(np.array([1, year]))))
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\2056355179.py:9: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
   l.append(float(est.predict(np.array([1, year]))))</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="31">
@@ -2109,7 +2107,7 @@ dtype: float64</code></pre>
 <li>각 시도도 마찬가지로 시도에서 전출한 총인구를 각 다른 시도로 전입한 인구를 나누면 됨</li>
 </ul></li>
 </ul>
-<div id="cell-46" class="cell" data-execution_count="37">
+<div id="cell-46" class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>trans2022_percent <span class="op">=</span> trans2022.copy()</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">17</span>):</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    trans2022_percent.iloc[:, i] <span class="op">=</span> (</span>
@@ -2117,7 +2115,7 @@ dtype: float64</code></pre>
 <span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>trans2022_percent</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+<pre><code>C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.59
 Busan               0.02
 Daegu               0.01
@@ -2137,7 +2135,7 @@ Gyeongsangnam-do    0.02
 Jeju-do             0.01
 Name: Seoul, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.04
 Busan               0.68
 Daegu               0.02
@@ -2157,7 +2155,7 @@ Gyeongsangnam-do    0.13
 Jeju-do             0.01
 Name: Busan, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.04
 Busan               0.02
 Daegu               0.64
@@ -2177,7 +2175,7 @@ Gyeongsangnam-do    0.04
 Jeju-do             0.00
 Name: Daegu, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.12
 Busan               0.01
 Daegu               0.01
@@ -2197,7 +2195,7 @@ Gyeongsangnam-do    0.01
 Jeju-do             0.01
 Name: Incheon, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.04
 Busan               0.01
 Daegu               0.00
@@ -2217,7 +2215,7 @@ Gyeongsangnam-do    0.01
 Jeju-do             0.01
 Name: Gwangju, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.06
 Busan               0.01
 Daegu               0.01
@@ -2237,7 +2235,7 @@ Gyeongsangnam-do    0.02
 Jeju-do             0.00
 Name: Daejeon, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.04
 Busan               0.09
 Daegu               0.03
@@ -2257,7 +2255,7 @@ Gyeongsangnam-do    0.07
 Jeju-do             0.01
 Name: Ulsan, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.09
 Busan               0.02
 Daegu               0.02
@@ -2277,7 +2275,7 @@ Gyeongsangnam-do    0.02
 Jeju-do             0.01
 Name: Sejong, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.18
 Busan               0.01
 Daegu               0.01
@@ -2297,7 +2295,7 @@ Gyeongsangnam-do    0.01
 Jeju-do             0.01
 Name: Gyeonggi\n-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.11
 Busan               0.01
 Daegu               0.01
@@ -2317,7 +2315,7 @@ Gyeongsangnam-do    0.01
 Jeju-do             0.00
 Name: Gangwon\n-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.07
 Busan               0.01
 Daegu               0.01
@@ -2337,7 +2335,7 @@ Gyeongsangnam-do    0.02
 Jeju-do             0.00
 Name: Chungcheong\nbuk-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.08
 Busan               0.01
 Daegu               0.01
@@ -2357,7 +2355,7 @@ Gyeongsangnam-do    0.02
 Jeju-do             0.00
 Name: Chungcheong\nnam-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.06
 Busan               0.01
 Daegu               0.00
@@ -2377,7 +2375,7 @@ Gyeongsangnam-do    0.01
 Jeju-do             0.00
 Name: Jeollabuk\n-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.06
 Busan               0.02
 Daegu               0.01
@@ -2397,7 +2395,7 @@ Gyeongsangnam-do    0.02
 Jeju-do             0.01
 Name: Jeollanam\n-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.05
 Busan               0.03
 Daegu               0.16
@@ -2417,7 +2415,7 @@ Gyeongsangnam-do    0.04
 Jeju-do             0.00
 Name: Gyeongsang\nbuk-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.04
 Busan               0.14
 Daegu               0.02
@@ -2437,7 +2435,7 @@ Gyeongsangnam-do    0.63
 Jeju-do             0.01
 Name: Gyeongsang\nnam-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (
-C:\Users\sigma\AppData\Local\Temp\ipykernel_7820\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
+C:\Users\sigma\AppData\Local\Temp\ipykernel_13004\4015714302.py:3: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise in a future error of pandas. Value 'in/out
 Seoul               0.11
 Busan               0.03
 Daegu               0.02
@@ -2458,7 +2456,7 @@ Jeju-do             0.57
 Name: Jeju-do, dtype: float64' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   trans2022_percent.iloc[:, i] = (</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="37">
+<div class="cell-output cell-output-display" data-execution_count="33">
 <div>
 
 
@@ -2856,9 +2854,9 @@ Name: Jeju-do, dtype: float64' has dtype incompatible with int64, please explici
 <li>서울에서 서울로 전이 확률은 <span class="math inline">\(0.599\)</span>, 서울에서 부산으로 전이 확률은 <span class="math inline">\(0.02\)</span>, 서울에서 대구로 전이 확률은 <span class="math inline">\(0.01\)</span></li>
 <li>이 상태전이확률을 이용하여 다음 상태를 구할 수 있음 =&gt; <span class="math inline">\(X_{1} = T * X_{0}\)</span>로, 내년 인구 <span class="math inline">\(X_{1}\)</span>는 상태전이확률 <span class="math inline">\(T\)</span>와 현재 인구 <span class="math inline">\(X_{0}\)</span>의 내적으로 구할 수 있음</li>
 </ul>
-<div id="cell-48" class="cell" data-execution_count="38">
+<div id="cell-48" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>pd.Series(np.dot(trans2022_percent, population2022), index<span class="op">=</span>trans2022.index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="38">
+<div class="cell-output cell-output-display" data-execution_count="34">
 <pre><code>in/out
 Seoul                9,770,837.12
 Busan                3,505,609.21
@@ -2880,12 +2878,12 @@ Jeju-do                680,562.40
 dtype: float64</code></pre>
 </div>
 </div>
-<div id="cell-49" class="cell" data-execution_count="47">
+<div id="cell-49" class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    pd.Series(np.dot(trans2022_percent, population2022), index<span class="op">=</span>trans2022.index)</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span> population2022</span>
 <span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="47">
+<div class="cell-output cell-output-display" data-execution_count="35">
 <pre><code>in/out
 Seoul                342,465.12
 Busan                187,797.21
@@ -2921,13 +2919,13 @@ dtype: float64</code></pre>
 </ul></li>
 <li>오차를 감안하고, 좀 더 진행</li>
 </ul>
-<div id="cell-51" class="cell" data-execution_count="48">
+<div id="cell-51" class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>population_trans_10 <span class="op">=</span> pd.Series(</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    np.dot(np.linalg.matrix_power(trans2022_percent, <span class="dv">10</span>), population2022),</span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>trans2022.index,</span>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>population_trans_10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="48">
+<div class="cell-output cell-output-display" data-execution_count="36">
 <pre><code>in/out
 Seoul                9,583,711.88
 Busan                4,035,160.79
@@ -2949,13 +2947,13 @@ Jeju-do                687,542.90
 dtype: float64</code></pre>
 </div>
 </div>
-<div id="cell-52" class="cell" data-execution_count="49">
+<div id="cell-52" class="cell" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>population_trans_40 <span class="op">=</span> pd.Series(</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    np.dot(np.linalg.matrix_power(trans2022_percent, <span class="dv">40</span>), population2022),</span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>trans2022.index,</span>
 <span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>population_trans_40</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="49">
+<div class="cell-output cell-output-display" data-execution_count="37">
 <pre><code>in/out
 Seoul                9,515,405.90
 Busan                4,108,709.06

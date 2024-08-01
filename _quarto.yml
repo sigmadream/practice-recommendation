@@ -19,13 +19,20 @@ website:
         contents:
           - practice/practice01.ipynb
           - practice/practice02.ipynb
-          - practice/practice03a.ipynb
+          - practice/practice03.ipynb
 
 format:
   html:
     theme: cosmo
     css: styles.css
     toc: true
-
-
-
+  # pdf:
+  #   documentclass: scrreprt
+  #   papersize: a4
+  #   toc: true
+  #   toc-depth: 2
+  #   number-sections: true
+  #   colorlinks: true
+  #   include-in-header: 
+  #     text: |
+  #       \usepackage{kotex}

@@ -4,3 +4,4 @@ git+https://github.com/sigmadream/koreanize-matplotlib.git
 statsmodels
 openpyxl
 scikit-learn
+ipykernel
